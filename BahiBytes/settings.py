@@ -17,8 +17,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-7alwxm&uo@2c+olf&0p28kksf)$4+!_c8dngpfhs1^ewr*ba+3'
 DEBUG = False
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = [
+    'pixstore-production.up.railway.app',  # Replace with your actual Railway domain
+    'localhost',
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
