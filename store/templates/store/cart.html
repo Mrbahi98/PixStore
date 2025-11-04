@@ -1,0 +1,187 @@
+{% load static %}
+{% load i18n %}
+{% load cart_extras %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% trans "Your Cart" %} | PixStore</title>
+<style>
+  :root {
+    --bg: #0d2438;
+    --muted: #d4d4d4;
+    --accent-start: #ff375f;
+    --accent-end: #00c8ff;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: #fff;
+    font-family: Inter, system-ui, Arial;
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px;
+  }
+  .cart-item {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media(min-width:720px){
+    .cart-item { flex-direction: row; justify-content: space-between; align-items: center; }
+  }
+  .thumb { width: 110px; height: 110px; border-radius: 10px; overflow: hidden; background: rgba(255,255,255,0.02); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .meta h3 { margin: 0; font-size: 1.05rem; color: #f8fafc; }
+  .meta p { margin: 0; color: #c7d2db; }
+  .actions { display: flex; gap: 8px; align-items: center; }
+  .btn { padding: 8px 12px; border-radius: 8px; border: none; cursor: pointer; }
+  .decr { background: #374151; color: #fff; }
+  .incr { background: #0369a1; color: #fff; }
+  .rm { background: #dc2626; color: #fff; }
+  .total { text-align: right; font-weight: 700; margin-top: 18px; }
+  footer { text-align:center; padding:40px 0; color:#9fb0c0; border-top:1px solid rgba(255,255,255,0.04); }
+</style>
+</head>
+<body>
+
+<header style="padding:16px 28px; border-bottom:1px solid rgba(255,255,255,0.04);">
+  <div style="max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center;">
+    <a href="/"><img src="{% static 'images/pixstore-logo-v2.png' %}" alt="PixStore" style="height:110px; object-fit:contain;"></a>
+    <nav>
+      <a href="{% url 'home' %}" style="color:#dbeafe; text-decoration:none; margin-right:20px;">{% trans "Home" %}</a>
+      <a href="{% url 'products' %}" style="color:#dbeafe; text-decoration:none; margin-right:20px;">{% trans "Products" %}</a>
+      <a href="{% url 'cart' %}" style="color:#dbeafe; text-decoration:none;">{% trans "Cart" %}</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h1 style="text-align:center; margin-bottom:32px;">{% trans "Your Cart" %}</h1>
+
+  {% if cart_items %}
+    {% for item in cart_items %}
+      <div class="cart-item">
+        <div style="display:flex; gap:14px; align-items:center;">
+          <div class="thumb"><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}"></div>
+          <div class="meta">
+            <h3>{{ item.product.name }}</h3>
+            <p>${{ item.product.price }}</p>
+          </div>
+        </div>
+
+        <div style="text-align:right;">
+          <div class="actions" style="justify-content:flex-end;">
+            <form method="post" style="display:inline;">{% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <input type="hidden" name="action" value="decrease">
+              <button class="btn decr">−</button>
+            </form>
+            <div style="min-width:36px; text-align:center; font-weight:700;">{{ item.quantity }}</div>
+            <form method="post" style="display:inline;">{% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+              <input type="hidden" name="action" value="increase">
+              <button class="btn incr">+</button>
+            </form>
+            <form method="post" style="display:inline;">{% csrf_token %}
+              <input type="hidden" name="product_id" value="{{ item.product.id }}">
+<input type="hidden" name="action" value="remove">
+              <button class="btn rm">{% trans "Remove" %}</button>
+            </form>
+          </div>
+          <div style="margin-top:8px; font-weight:700;">
+            {% trans "Item total" %}: ${{ item.item_total }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+
+    <div class="total">
+      {% trans "Total" %}: ${{ total_price }}<br>
+      <a href="{% url 'checkout_summary' %}"
+         style="display:inline-block; margin-top:10px; background:linear-gradient(90deg,var(--accent-start),var(--accent-end));
+                padding:12px 18px; color:#fff; border-radius:10px; text-decoration:none;">
+        {% trans "Checkout" %}
+      </a>
+    </div>
+
+  {% else %}
+    <div class="empty" style="text-align:center; margin-top:50px;">{% trans "Your cart is empty." %}</div>
+  {% endif %}
+</main>
+
+<footer>
+  © {{ now|date:"Y" }} PixStore — {% trans "All Rights Reserved" %}.
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("added") === "1") {
+    const toast = document.createElement("div");
+    toast.innerHTML = 
+      <div class="toast-inner">
+        <div class="checkmark-container">
+          <svg class="checkmark" viewBox="0 0 52 52">
+            <path class="checkmark__circle" d="M26 1c13.8 0 25 11.2 25 25S39.8 51 26 51 1 39.8 1 26 12.2 1 26 1z"></path>
+            <path class="checkmark__check" d="M14 27l7 7 16-16"></path>
+          </svg>
+        </div>
+        <div>
+          <div class="toast-title">{% trans "Added to Cart" %}</div>
+          <div class="toast-subtitle">{% trans "Product added successfully!" %}</div>
+        </div>
+      </div>;
+    toast.className = "toast-container";
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      toast.style.transform = "translateX(-50%) translateY(-40px)";
+      setTimeout(() => toast.remove(), 500);
+    }, 3000);
+  }
+});
+</script>
+
+<style>
+.toast-container {
+  position: fixed;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-30px);
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  color: #fff;
+  padding: 12px 18px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  font-family: system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  animation: slideDown 0.5s ease forwards;
+  transition: opacity 0.5s, transform 0.5s;
+}
+.toast-inner { display: flex; align-items: center; gap: 14px; }
+.toast-title { font-weight: 600; font-size: 1.1rem; }
+.toast-subtitle { font-size: 0.9rem; opacity: 0.9; }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateX(-50%) translateY(-30px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+.checkmark-container { width: 30px; height: 30px; }
+.checkmark { width: 100%; height: 100%; stroke-width: 3; stroke: #22c55e; stroke-miterlimit: 10; animation: scaleUp 0.4s ease-in-out 0.2s both; }
+.checkmark__circle { fill: none; stroke: rgba(255, 255, 255, 0.6); stroke-width: 3; stroke-dasharray: 166; stroke-dashoffset: 166; animation: stroke 0.6s ease-in-out forwards; }
+.checkmark__check { transform-origin: 50% 50%; stroke-dasharray: 48; stroke-dashoffset: 48; animation: stroke 0.3s ease-in-out 0.6s forwards; }
+@keyframes stroke { to { stroke-dashoffset: 0; } }
+@keyframes scaleUp { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+</style>
+</body>
+</html>

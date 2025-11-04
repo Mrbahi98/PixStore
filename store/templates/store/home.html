@@ -1,0 +1,309 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% trans "PixStore | Digital Products" %}</title>
+
+  <style>
+    :root {
+      --bg: #0d2438;
+      --accent-start: #ff375f;
+      --accent-end: #00c8ff;
+      --accent-mid: #00ff95;
+      --muted: #9fb0c0;
+      --price-new: #00c8ff;
+      --price-old: #9fb0c0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #fff;
+    }
+
+    header {
+      width: 100%;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      backdrop-filter: blur(10px);
+    }
+
+    .site-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-img {
+      height: 80px;
+      width: auto;
+      transition: 0.3s ease;
+    }
+
+    .logo-img:hover { transform: scale(1.05); }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    nav a {
+      color: #dbeafe;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover { color: var(--accent-end); }
+
+    .lang-switcher select {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: black;
+      font-weight: 600;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .lang-switcher select:focus {
+      outline: none;
+      border-color: var(--accent-end);
+    }
+
+    .hero {
+      padding: 80px 20px 60px;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(0,200,255,0.08) 0%, transparent 60%);
+    }
+
+    .hero h1 {
+      font-size: 2.8rem;
+      line-height: 1.1;
+      margin-bottom: 12px;
+      background: linear-gradient(90deg, var(--accent-start), #ffb700, var(--accent-mid), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 740px;
+      margin: 14px auto 30px;
+      font-size: 1.05rem;
+    }
+
+    .btn-accent {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      color: white;
+      padding: 14px 32px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 6px 20px rgba(0,200,255,0.1);
+      transition: all 0.2s ease;
+    }
+
+    .btn-accent:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,200,255,0.18);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    main h2 {
+      text-align: center;
+      color: #c9d7e3;
+      margin-bottom: 24px;
+      font-size: 1.6rem;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-height: 360px;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+
+    .sale-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      z-index: 5;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+    }
+
+    .card .thumb {
+      height: 190px;
+      background: rgba(255,255,255,0.02);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .card img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .card .body {
+      padding: 16px 18px 24px;
+      text-align: center;
+      margin-top: auto;
+    }
+
+    .pix-prices {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .pix-old {
+      color: var(--price-old);
+      text-decoration: line-through;
+      font-size: 0.9rem;
+    }
+
+    .pix-new {
+      color: var(--price-new);
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    footer {
+      padding: 28px 20px;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+    }
+
+    @media (max-width:700px) {
+      .logo-img { height: 65px; }
+      .hero h1 { font-size: 2rem; }
+      nav a { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="site-container">
+      <a href="/" class="brand">
+        <img src="{% static 'images/pixstore-logo-v2.png' %}" alt="PixStore" class="logo-img">
+      </a>
+
+      <nav>
+        <a href="{% url 'home' %}">{% trans "Home" %}</a>
+        <a href="{% url 'products' %}">{% trans "Products" %}</a>
+        <a href="{% url 'cart' %}">{% trans "Cart" %}</a>
+
+        <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
+          {% csrf_token %}
+          <select name="language" onchange="this.form.submit()">
+            <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>English</option>
+            <option value="ar" {% if LANGUAGE_CODE == 'ar' %}selected{% endif %}>العربية</option>
+          </select>
+        </form>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>{% trans "PixStore — Digital goods that ship instantly" %}</h1>
+    <p>{% trans "Premium templates, bundles, and creative tools. Simple checkout, instant delivery, and full security." %}</p>
+    <a href="{% url 'products' %}" class="btn-accent">{% trans "Explore Products" %}</a>
+  </section>
+
+  <main>
+    <h2>{% trans "Featured Products" %}</h2>
+    <div class="grid">
+      {% for product in products %}
+      <article class="card">
+        {% if product.old_price and product.old_price > product.price %}
+          <div class="sale-badge">
+            -{{ product.discount_percent }}%
+          </div>
+        {% endif %}
+        <div class="thumb">
+          {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+          {% else %}
+            <img src="{% static 'images/default-product.png' %}" alt="No image">
+          {% endif %}
+        </div>
+        <div class="body">
+          <h3>{{ product.name }}</h3>
+
+          <div class="pix-prices">
+            {% if product.old_price %}
+              <span class="pix-old">{{ product.old_price|floatformat:0 }} DA</span>
+            {% endif %}
+            <span class="pix-new">{{ product.price|floatformat:0 }} DA</span>
+          </div>
+
+          <a href="{% url 'product_detail' product.pk %}" class="btn-accent">{% trans "View Details" %}</a>
+        </div>
+      </article>
+      {% empty %}
+      <p style="color:#9fb0c0; text-align:center; grid-column:1/-1;">{% trans "No products available yet." %}</p>
+      {% endfor %}
+    </div>
+  </main>
+
+  <footer>
+    © {{ now|date:"Y" }} PixStore — {% trans "All Rights Reserved." %}
+  </footer>
+</body>
+</html>

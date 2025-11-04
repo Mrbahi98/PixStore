@@ -1,0 +1,200 @@
+{% load static %}
+{% load i18n %}
+{% block content %}
+<main class="checkout-dark">
+  <div class="checkout-card">
+    <h1>{% trans "Upload Payment Proof" %}</h1>
+    <p class="text-muted" style="margin-bottom: 24px;">{{ instructions }}</p>
+
+    <form method="post" enctype="multipart/form-data" action="{% url 'upload_payment_proof' %}?payment_method={{ payment_method }}">
+      {% csrf_token %}
+
+      <!-- 💳 Payment Accounts -->
+      <section class="accounts-container">
+        <h2>{% trans "Available Accounts" %}</h2>
+        <div class="accounts-grid">
+         {% for account in accounts %}
+  <div class="account-card"
+     onclick="copyToClipboard('{% if account.number %}{{ account.number }}{% elif account.address %}{{ account.address }}{% endif %}')">
+    <h3>{{ account.name }}</h3>
+
+    {% if account.number %}
+      <p><strong>{% trans "Account Number" %}:</strong> {{ account.number }}</p>
+    {% endif %}
+
+    {% if account.address %}
+      <p><strong>{% trans "Wallet Address" %}:</strong> <span class="break-all">{{ account.address }}</span></p>
+    {% endif %}
+
+    {% if account.owner %}
+      <p><strong>{% trans "Owner" %}:</strong> {{ account.owner }}</p>
+    {% endif %}
+
+    <span class="copy-hint">{% trans "Click to copy details" %}</span>
+  </div>
+{% empty %}
+  <p class="no-accounts">{% trans "No available accounts at the moment." %}</p>
+{% endfor %}
+
+        </div>
+      </section>
+
+      <!-- 📤 Upload Proof (clean, centered) -->
+      <div class="upload-proof-form">
+        <label for="proof">{% trans "Upload Screenshot" %}</label>
+        <div class="file-input-wrapper">
+          <input type="file" id="proof" name="proof" accept="image/*" required>
+        </div>
+        <button type="submit">{% trans "Submit Proof" %}</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.classList.add("checkout-dark-mode");
+});
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text);
+  const toast = document.createElement("div");
+  toast.textContent = "Copied!";
+  toast.className = "fixed bottom-6 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-[9999]";
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 1500);
+}
+</script>
+
+<style>
+:root {
+  --bg: #0d2438;
+  --accent-start: #ff375f;
+  --accent-mid: #00ff95;
+  --accent-end: #00c8ff;
+  --muted: #d4d4d4;
+}
+
+/* 🌙 Dark theme */
+.checkout-dark-mode {
+  background: var(--bg);
+  color: #fff;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+}
+
+/* 🧾 Main card */
+.checkout-card {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 36px 28px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+}
+
+.checkout-card h1 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-mid), var(--accent-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 💳 Accounts */
+.accounts-container {
+  margin-top: 40px;
+  text-align: center;
+}
+.accounts-container h2 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 15px;
+}
+.account-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 25px;
+  padding: 15px;
+  text-align: left;
+  transition: 0.3s ease;
+  cursor: pointer;
+}
+.account-card:hover {
+  border-color: var(--accent-end);
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+}
+.account-card h3 {
+  color: var(--accent-end);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.account-card p {
+  font-size: 0.95rem;
+  color: #dbeafe;
+  margin-bottom: 6px;
+}
+.copy-hint {
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* 📤 Upload section (new compact look) */
+.upload-proof-form {
+  max-width: 380px;
+  margin: 40px auto 0;
+  text-align: center;
+}
+.upload-proof-form label {
+  display: block;
+  font-weight: 600;
+  color: #e0e7ff;
+  margin-bottom: 10px;
+}
+.file-input-wrapper {
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  border-radius: 12px;
+  padding: 2px;
+  margin-bottom: 14px;
+}
+.upload-proof-form input[type="file"] {
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  color: #fff;
+  cursor: pointer;
+}
+.upload-proof-form button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.upload-proof-form button:hover {
+  transform: scale(1.03);
+  opacity: 0.9;
+}
+
+@media (max-width:700px){
+  .checkout-card{margin:40px 20px;padding:24px;}
+  .checkout-card h1{font-size:1.7rem;}
+}
+</style>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}PixStore{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="/" class="flex items-center space-x-2">
+        <img src="{% static 'images/pixstore-logo-v2.png' %}" alt="PixStore Logo" class="h-10 w-auto object-contain drop-shadow-md">
+      </a>
+      <nav class="flex space-x-6 text-white font-medium"> 
+<form action="{% url 'set_language' %}" method="post" class="lang-switcher">
+  {% csrf_token %}
+  <select name="language" onchange="this.form.submit()">
+
+    <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇺🇸 English</option>
+    <option value="ar" {% if LANGUAGE_CODE == 'ar' %}selected{% endif %}>🇸🇦 العربية</option>
+  </select>
+</form>
+        <a href="{% url 'home' %}" class="hover:text-yellow-300 transition">{% trans "Home" %}</a>
+<a href="{% url 'products' %}" class="hover:text-yellow-300 transition">{% trans "Products" %}</a>
+<a href="{% url 'cart' %}" class="hover:text-yellow-300 transition relative">
+  {% trans "Cart" %}
+</a>
+          <span id="cart-count" class="absolute -top-2 -right-4 bg-yellow-300 text-black text-xs font-semibold px-1.5 py-0.5 rounded-full shadow-sm">
+            {% if request.user.is_authenticated %}
+              {{ cart_count }}
+            {% else %}
+              {{ request.session.cart|length|default:0 }}
+            {% endif %}
+          </span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <main class="flex-1 max-w-7xl mx-auto w-full px-6 py-12">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-gray-300 text-center py-6 mt-auto">
+    <p class="text-sm">© 2025 PixStore — All rights reserved.</p>
+  </footer>
+<div id="toast-container" style="
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+"></div>
+<!-- ✅ Toast Notification -->
+<div id="toast" 
+  class="hidden fixed bottom-6 right-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 
+  text-white px-5 py-3 rounded-xl shadow-xl transition-all duration-300 z-50 text-sm font-medium tracking-wide backdrop-blur-sm">
+  {% trans "Product added to cart ✅" %}
+</div>
+
+<!-- Toast Message (hidden translation source) -->
+<div id="toast-message" data-msg="{% trans 'Product added to cart successfully!' %}" hidden></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('added') === '1') {
+    const toast = document.createElement('div');
+    const msg = document.getElementById('toast-message').dataset.msg;
+
+    toast.innerHTML = 
+      <div class="flex items-center space-x-2">
+        <span class="text-lg text-green-400 font-bold">✅</span>
+        <span>${msg}</span>
+      </div>
+    ;
+
+    toast.className = 
+      fixed bottom-6 right-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600
+      text-white px-5 py-3 rounded-xl shadow-xl transition-all duration-300
+      z-50 text-sm font-medium tracking-wide backdrop-blur-sm
+    ;
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => toast.remove(), 3000);
+  }
+});
+</script><style>
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: slideUp 0.4s ease-out; }
+
+.lang-switcher {
+  display: inline-block;
+  margin-left: 15px;
+}
+.lang-switcher select {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.lang-switcher select:focus {
+  outline: none;
+  border-color: var(--accent-end);
+}
+</style>
+
+<!-- Optional: if toast.js adds custom logic, keep it -->
+<script src="{% static 'store/toast.js' %}"></script>
+</body>
+</html>

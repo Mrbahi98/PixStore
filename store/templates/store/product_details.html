@@ -1,0 +1,151 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ product.name }} | PixStore</title>
+  <style>
+    :root {
+      --bg: #0d2438;
+      --accent-start: #ff375f;
+      --accent-end: #00c8ff;
+      --accent-mid: #00ff95;
+      --muted: #d4d4d4;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #fff;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 80px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 60px;
+      align-items: center;
+    }
+
+    .image-box {
+      background: rgba(255,255,255,0.03);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      text-align: center;
+      padding: 20px;
+    }
+
+    .image-box img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .image-box:hover img {
+      transform: scale(1.05);
+    }
+
+    .details h1 {
+      font-size: 2.4rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-mid), var(--accent-end));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .details p.desc {
+      line-height: 1.6;
+      color: #b9c9d6;
+      margin-bottom: 24px;
+    }
+
+    .price {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #dbeafe;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+      color: #fff;
+      box-shadow: 0 0 20px rgba(0,200,255,0.15);
+      transition: transform .18s ease, box-shadow .18s ease;
+      margin-right: 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,200,255,0.25);
+    }
+
+    footer {
+      text-align: center;
+      padding: 50px 0;
+      border-top: 1px solid rgba(255,255,255,0.04);
+      color: #9fb0c0;
+    }
+
+    @media(max-width:700px){
+      .container{margin:40px auto;}
+      .details h1{font-size:1.8rem;}
+    }
+  </style>
+</head>
+<body>
+
+  <header style="text-align:center; padding:20px;">
+    <a href="/" style="text-decoration:none; color:#fff; font-weight:700; font-size:1.2rem;">← {% trans "Back to Store" %}</a>
+  </header>
+
+  <section class="container">
+    <div class="image-box">
+      <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+
+    <div class="details">
+      <h1>{{ product.name }}</h1>
+<p class="desc">{{ product.description|linebreaks }}</p>
+     <div class="price">
+  {% if product.old_price and product.old_price > product.price %}
+    <span style="text-decoration: line-through; color:#999; font-size:1.2rem; margin-right:10px;">
+      {{ product.old_price }}DA
+    </span>
+    <span style="color:#00ff95; font-size:1.6rem; font-weight:700;">
+      {{ product.price }}DA
+    </span>
+    <span style="background:rgba(255,0,0,0.15); color:#ff375f; padding:4px 8px; border-radius:6px; font-size:0.9rem; margin-left:8px;">
+      -{{ product.discount_percent }}%
+    </span>
+  {% else %}
+    <span style="color:#dbeafe; font-size:1.6rem; font-weight:700;">
+      {{ product.price }}DA
+    </span>
+  {% endif %}
+</div>
+
+      <form method="post" action="{% url 'add_to_cart' product.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn">{% trans "Add to Cart" %}</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    © {{ now|date:"Y" }} PixStore — {% trans "All Rights Reserved" %}.
+  </footer>
+</body>
+</html>

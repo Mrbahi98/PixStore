@@ -1,0 +1,154 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% trans "Order Successful | PixStore" %}</title>
+  <style>
+    :root {
+      --bg: #0d2438;
+      --accent-start: #ff375f;
+      --accent-end: #00c8ff;
+      --muted: #d4d4d4;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--bg);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      width: 100%;
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .site-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo-img { width: 110px; height: auto; object-fit: contain; }
+    nav a {
+      color: #dbeafe;
+      text-decoration: none;
+      margin-left: 22px;
+      font-weight: 600;
+    }
+    nav a:hover { color: var(--accent-end); }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .success-box {
+      background: rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 40px 50px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-width: 480px;
+      width: 100%;
+    }
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 24px;
+      background: linear-gradient(90deg,var(--accent-start),var(--accent-end));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .success-icon svg {
+      width: 38px;
+      height: 38px;
+      fill: white;
+    }
+    h1 { font-size: 1.8rem; margin-bottom: 10px; }
+    p { color: var(--muted); margin-bottom: 26px; }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    a.btn {
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 8px;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+    a.btn-primary {
+      background: linear-gradient(90deg,var(--accent-start),var(--accent-end));
+      color: #fff;
+    }
+    a.btn-primary:hover { opacity: 0.9; }
+    a.btn-secondary {
+      border: 1px solid var(--accent-end);
+      color: var(--accent-end);
+      background: transparent;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px 20px;
+      border-top: 1px solid rgba(255,255,255,0.03);
+      color: #9fb0c0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="site-container">
+      <a href="/" class="brand">
+        <img src="{% static 'images/pixstore-logo-v2.png' %}" alt="{% trans 'PixStore' %}" class="logo-img">
+      </a>
+      <nav>
+        <a href="{% url 'home' %}">{% trans "Home" %}</a>
+        <a href="{% url 'products' %}">{% trans "Products" %}</a>
+        <a href="{% url 'cart' %}">{% trans "Cart" %}</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="success-box">
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+        </svg>
+      </div>
+      <h1>{% trans "Payment Successful!" %}</h1>
+      <p>{% trans "Your digital products are ready. You’ll receive access details by email shortly." %}</p>
+
+      <div class="btn-group">
+        <a href="{% url 'products' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
+        <a href="{% url 'my_orders' %}" class="btn btn-secondary">{% trans "View My Orders" %}</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    © {{ now|date:"Y" }} PixStore — {% trans "All Rights Reserved." %}
+  </footer>
+
+</body>
+</html>

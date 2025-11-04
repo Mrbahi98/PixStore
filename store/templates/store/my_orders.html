@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders | PixStore</title>
+  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="/" class="text-2xl font-bold text-blue-600">PixStore</a>
+    <nav class="space-x-6">
+      <a href="{% url 'home' %}" class="text-gray-700 hover:text-blue-600">Home</a>
+      <a href="{% url 'products' %}" class="text-gray-700 hover:text-blue-600">Products</a>
+      <a href="{% url 'cart' %}" class="text-gray-700 hover:text-blue-600">Cart</a>
+    </nav>
+  </div>
+</header>
+
+<main class="max-w-5xl mx-auto px-6 py-12">
+  <h1 class="text-3xl font-bold mb-8">My Orders</h1>
+
+  {% if orders %}
+  <div class="space-y-6">
+    {% for order in orders %}
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div>
+          <h2 class="text-lg font-semibold">Order #{{ order.id }}</h2>
+          <p class="text-sm text-gray-500">Placed on {{ order.created_at|date:"M d, Y H:i" }}</p>
+        </div>
+        <span class="text-blue-600 font-semibold">${{ order.total_price }}</span>
+      </div>
+
+      <div class="border-t pt-4 space-y-2">
+        {% for item in order.items.all %}
+          <p class="text-gray-700">{{ item.product.name }} × {{ item.quantity }}</p>
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>You haven’t placed any orders yet.</p>
+  {% endif %}
+</main>
+
+<footer class="bg-white py-6 border-t mt-16 text-center text-gray-500 text-sm">
+  © {{ now|date:"Y" }} PixStore. All rights reserved.
+</footer>
+
+</body>
+</html>

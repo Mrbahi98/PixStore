@@ -1,0 +1,181 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<main class="checkout-dark">
+  <div class="checkout-card">
+    <h1>{% trans "Checkout Summary" %}</h1>
+    <form method="post" action="{% url 'checkout_summary' %}">
+  {% csrf_token %}
+<!-- form fields (full name, email, payment method, etc.) -->
+  <div class="text-center mt-6">
+  </div>
+      <!-- Full Name -->
+      <div class="form-group">
+        <label>{% trans "Full Name" %}</label>
+        <input type="text" name="name" placeholder="Enter your full name" required>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>{% trans "Email" %}</label>
+        <input type="email" name="email" placeholder="Enter your email" required>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="payment-section">
+        <h2>{% trans "Select Payment Method" %}</h2>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="payment_method" value="crypto" required>
+            <div class="option-box">
+              <img src="{% static 'images/crypto-icon.png' %}" alt="Crypto">
+              <span>{% trans "Crypto" %}</span>
+            </div>
+          </label>
+
+          <label class="payment-option">
+            <input type="radio" name="payment_method" value="baridimob" required>
+            <div class="option-box">
+              <img src="{% static 'images/baridimob-icon.png' %}" alt="Baridimob">
+              <span>{% trans "Baridimob" %}</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="summary-section">
+<h3>{% trans "Items" %}</h3>
+        <ul>
+          {% for item in cart_items %}
+            <li>{{ item.product.name }} × {{ item.quantity }} — {{ item.item_total }} DA</li>
+          {% endfor %}
+        </ul>
+        <p class="total"><strong>Total:</strong> {{ total_price }} DA</p>
+      </div>
+
+      <!-- Continue Button -->
+    <button type="submit" class="continue-btn">{% trans "Continue to Proof Upload" %}</button>
+    </form>
+  </div>
+</main>
+
+<script>
+  // Add a dark class to the body only for this page
+  document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.add("checkout-dark-mode");
+  });
+</script>
+<style>
+:root {
+  --bg: #0d2438;
+  --accent-start: #ff375f;
+  --accent-end: #00c8ff;
+  --muted: #d4d4d4;
+}
+/* ✅ Make the entire page dark only for this template */
+.checkout-dark-mode {
+  background: var(--bg) !important;
+  color: #fff !important;
+}
+.checkout-dark-mode header {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.checkout-dark-mode footer {
+  background: rgba(255,255,255,0.03) !important;
+  color: #9fb0c0 !important;
+}
+
+.checkout-dark-mode nav a {
+  color: #dbeafe !important;
+}
+.checkout-dark-mode nav a:hover {
+  color: var(--accent-end) !important;
+}
+
+.checkout-card {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.form-group { margin-bottom: 22px; text-align: left; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 8px; }
+.form-group input {
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+}
+.form-group input::placeholder { color: #9fb0c0; }
+
+.payment-section { margin-top: 30px; text-align: center; }
+.payment-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.payment-options { display: flex; justify-content: center; gap: 25px; flex-wrap: wrap; }
+.payment-option { flex: 1; max-width: 160px; cursor: pointer; }
+.payment-option input { display: none; }
+.option-box {
+  background: rgba(255,255,255,0.04);
+  border: 2px solid transparent;
+  border-radius: 14px;
+  padding: 18px 24px;
+  transition: 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.option-box:hover { border-color: var(--accent-end); background: rgba(255,255,255,0.08); }
+.option-box img { width: 50px; height: 50px; object-fit: contain; margin-bottom: 10px; }
+.option-box span { color: #dbeafe; font-weight: 600; }
+.payment-option input:checked + .option-box {
+  border: 2px solid var(--accent-end);
+  background: rgba(255,255,255,0.1);
+  box-shadow: 0 0 12px rgba(0,200,255,0.3);
+}
+
+.summary-section { margin: 24px 0; text-align: left; }
+.summary-section ul { list-style: none; padding: 0; margin: 0 0 14px; }
+.summary-section li { margin-bottom: 6px; color: var(--muted); }
+.total { font-size: 1.1rem; font-weight: 600; }
+
+.continue-btn {
+  background: linear-gradient(90deg,var(--accent-start),var(--accent-end));
+  color: #fff;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.continue-btn:hover { opacity: 0.9; }
+.checkout-dark-mode header img {
+  height: 80px !important;   /* Try 60px first; adjust to 70px or 80px if needed */
+  width: auto !important;
+  transition: 0.3s ease;
+}
+
+.checkout-dark-mode header img:hover {
+  transform: scale(1.05);
+}
+</style>
+{% endblock %}
