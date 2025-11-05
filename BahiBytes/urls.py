@@ -4,15 +4,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 
+# Language switcher
 urlpatterns = [
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 
-urlpatterns += i18n_patterns(
+# Admin outside language prefix
+urlpatterns += [
     path('admin/', admin.site.urls),
+]
+
+# App URLs with language prefixes
+urlpatterns += i18n_patterns(
     path('', include('store.urls')),
 )
 
+# Static / media in debug + browser reload
 if settings.DEBUG:
     urlpatterns += [
         path("__reload__/", include("django_browser_reload.urls")),
