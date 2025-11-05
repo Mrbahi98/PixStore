@@ -18,7 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-7alwxm&uo@2c+olf&0p28kksf)$4+!_c8dngpfhs1^ewr*ba+3'
 DEBUG = False
 ALLOWED_HOSTS = ['pixstore-production.up.railway.app', 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://tion.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://pixstore-production.up.railway.app']
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
@@ -99,7 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = 'ar'
+LANGUAGE_CODE = 'en'
 LANGUAGES = [
     ('en', 'English'),
     ('ar', 'العربية'),
