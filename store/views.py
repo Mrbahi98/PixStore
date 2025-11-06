@@ -276,7 +276,6 @@ def checkout_summary(request):
             total_price=total_price,
             paid=False
         )
-
         for item in cart_items:
             OrderItem.objects.create(
                 order=order,
