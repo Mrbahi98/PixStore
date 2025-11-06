@@ -323,13 +323,14 @@ def upload_payment_proof(request):
     if request.method == 'POST' and request.FILES.get('proof'):
         proof = request.FILES['proof']
 
-        # Save proof to last order
-        order = Order.objects.filter(user=request.user).last()
-        if order:
-            order.payment_proof = proof
-            order.save()
+        # Only try to attach proof if user is authenticated
+        if request.user.is_authenticated:
+            order = Order.objects.filter(user=request.user).last()
+            if order and hasattr(order, 'payment_proof'):
+                order.payment_proof = proof
+                order.save()
 
-        # Save proof separately in PaymentProof model
+        # Always save proof in PaymentProof table
         PaymentProof.objects.create(
             user=request.user if request.user.is_authenticated else None,
             payment_method=payment_method,
@@ -339,7 +340,7 @@ def upload_payment_proof(request):
         messages.success(request, "✅ Payment proof uploaded successfully.")
         return redirect('checkout_success')
 
-    # Render upload page if not POST
+    # Render upload page
     return render(request, 'store/upload_payment_proof.html', {
         'payment_method': payment_method,
         'accounts': accounts,
