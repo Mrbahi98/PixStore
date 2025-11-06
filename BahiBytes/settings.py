@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,10 +32,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+
+    # must come before staticfiles
+    'cloudinary_storage',
+
     'django.contrib.staticfiles',
-    'whitenoise.runserver_nostatic',
 
     # 3rd party
+    'cloudinary',
     'tailwind',
 
     # Local apps
@@ -117,10 +124,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'theme' / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+cloudinary.config(
+    cloud_name="pixstore",
+    api_key="466399727861778",
+    api_secret="BQzvhrNU9Yl7hxyXPEJQFRoe5vU",
+)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+
+# Cloudinary storage settings
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -132,3 +148,5 @@ INTERNAL_IPS = ["127.0.0.1"]
 if DEBUG:
     INSTALLED_APPS += ['django_browser_reload']
     MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
+
+# test
