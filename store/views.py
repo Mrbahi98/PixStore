@@ -319,20 +319,30 @@ def upload_payment_proof(request):
             {"name": "USDT BSC (BEP20)", "address": "0x97a8bf22824ab18eb92a391275ff51b98c1bd2ca"},
         ]
 
-    # Handle proof upload
     if request.method == 'POST' and request.FILES.get('proof'):
         proof = request.FILES['proof']
 
-        # Only try to attach proof if user is authenticated
+        # Try to find the latest order for this user
+        order = None
         if request.user.is_authenticated:
             order = Order.objects.filter(user=request.user).last()
-            if order and hasattr(order, 'payment_proof'):
-                order.payment_proof = proof
-                order.save()
+        else:
+            order = Order.objects.last()  # fallback — if no user system yet
 
-        # Always save proof in PaymentProof table
+        # Extract buyer info
+        buyer_name = getattr(order, 'full_name', None)
+        buyer_email = getattr(order, 'email', None)
+
+        # Save proof to order (if any)
+        if order:
+            order.payment_proof = proof
+            order.save()
+
+        # Save in PaymentProof model
         PaymentProof.objects.create(
             user=request.user if request.user.is_authenticated else None,
+            name=buyer_name,
+            email=buyer_email,
             payment_method=payment_method,
             screenshot=proof
         )
@@ -340,7 +350,6 @@ def upload_payment_proof(request):
         messages.success(request, "✅ Payment proof uploaded successfully.")
         return redirect('checkout_success')
 
-    # Render upload page
     return render(request, 'store/upload_payment_proof.html', {
         'payment_method': payment_method,
         'accounts': accounts,
