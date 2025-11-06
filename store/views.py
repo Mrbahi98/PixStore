@@ -309,8 +309,13 @@ from .utils import get_cart_count  # if you already have this helper
 
 def upload_payment_proof(request):
     payment_method = request.GET.get('payment_method', '')
+    order_id = request.GET.get('order_id') or request.POST.get('order_id')
 
-    # Accounts info
+    order = None
+    if order_id:
+        order = get_object_or_404(Order, id=order_id)
+
+    # Available payment accounts
     accounts = []
     if payment_method == "baridimob":
         accounts = [
@@ -324,39 +329,57 @@ def upload_payment_proof(request):
             {"name": "USDT BSC (BEP20)", "address": "0x97a8bf22824ab18eb92a391275ff51b98c1bd2ca"},
         ]
 
-    # Handle proof upload
+    # Handle form submission
     if request.method == 'POST' and request.FILES.get('proof'):
-        proof = request.FILES['proof']
+        proof_image = request.FILES['proof']
 
-        # Get last order
-        order = Order.objects.filter(user=request.user if request.user.is_authenticated else None).last()
+        # Save the payment proof
+        payment_proof = PaymentProof.objects.create(
+            user=request.user if request.user.is_authenticated else None,
+            order=order,
+            name=order.name if order else None,
+            email=order.email if order else None,
+            payment_method=payment_method,
+            screenshot=proof_image
+        )
 
-        if order:
-            # Save proof to PaymentProof model with user info
-            PaymentProof.objects.create(
-                user=request.user if request.user.is_authenticated else None,
-                name=getattr(order, 'name', None),
-                email=getattr(order, 'email', None),
-                payment_method=payment_method,
-                screenshot=proof
+        # ✅ Email to customer
+        if order and order.email:
+            send_mail(
+                subject="✅ Payment Proof Received — PixStore",
+                message=(
+                    f"Hello {order.name},\n\n"
+                    "We’ve received your payment proof successfully.\n"
+                    "Our team will verify your payment and send your digital products soon.\n\n"
+                    "Thank you for choosing PixStore!"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[order.email],
+                fail_silently=True,
             )
-        else:
-            # No order found – fallback (still save proof)
-            PaymentProof.objects.create(
-                user=request.user if request.user.is_authenticated else None,
-                name=None,
-                email=None,
-                payment_method=payment_method,
-                screenshot=proof
-            )
 
-        messages.success(request, "✅ Payment proof uploaded successfully.")
+        # ✅ Email notification to admin
+        admin_email = settings.DEFAULT_FROM_EMAIL
+        send_mail(
+            subject=f"🆕 New Payment Proof Received ({payment_method})",
+            message=(
+                f"A new payment proof has been uploaded.\n\n"
+                f"Name: {order.name if order else 'Unknown'}\n"
+                f"Email: {order.email if order else 'Unknown'}\n"
+                f"Payment Method: {payment_method}\n"
+                f"Order ID: {order.id if order else 'N/A'}\n"
+                f"---\nPlease review it in the Django admin panel."
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[admin_email],
+            fail_silently=True,
+        )
+
+        messages.success(request, "✅ Payment proof uploaded successfully! You’ll receive an email confirmation shortly.")
         return redirect('checkout_success')
 
+    # Render upload page if not POST
     return render(request, 'store/upload_payment_proof.html', {
         'payment_method': payment_method,
         'accounts': accounts,
-        'cart_count': get_cart_count(request),
     })
-
-    return render(request, 'store/upload_payment_proof.html', context)

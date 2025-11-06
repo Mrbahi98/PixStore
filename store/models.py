@@ -75,12 +75,13 @@ class PaymentProof(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.CharField(max_length=100, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
+    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHODS)
-    screenshot = CloudinaryField('image', folder='payment_proofs/')
+    screenshot = models.ImageField(upload_to='payment_proofs/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        user_display = self.user.username if self.user else (self.name or "Guest")
-        return f"{user_display} - {self.payment_method} ({self.uploaded_at.strftime('%Y-%m-%d %H:%M')})"
+        display_name = self.name if self.name else (self.user.username if self.user else "Guest")
+        return f"{display_name} - {self.payment_method} ({self.uploaded_at.strftime('%Y-%m-%d %H:%M')})"
