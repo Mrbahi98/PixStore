@@ -38,7 +38,7 @@ class Product(models.Model):
 # ORDER MODEL
 # ------------------------------
 class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -46,24 +46,24 @@ class Order(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"Order #{self.id} - {self.user.username if self.user else self.name or 'Guest'}"
+        # Prefer name > username > Guest
+        display_name = self.name or (self.user.username if self.user else "Guest")
+        return f"Order #{self.id} - {display_name}"
+
+    def get_total_price(self):
+        # Compute from related items
+        total = sum(item.price * item.quantity for item in self.orderitem_set.all())
+        return total
 
 
-# ------------------------------
-# ORDER ITEM MODEL
-# ------------------------------
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name="items", on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def get_total(self):
-        return self.price * self.quantity
-
     def __str__(self):
-        return f"{self.product.name} (x{self.quantity})"
-
+        return f"{self.product.name} × {self.quantity}"
 
 # ------------------------------
 # PAYMENT PROOF MODEL
@@ -75,13 +75,11 @@ class PaymentProof(models.Model):
     ]
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
-    order = models.ForeignKey('Order', on_delete=models.SET_NULL, null=True, blank=True)
-    name = models.CharField(max_length=255, null=True, blank=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHODS)
     screenshot = models.ImageField(upload_to='payment_proofs/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        display_name = self.name if self.name else (self.user.username if self.user else "Guest")
-        return f"{display_name} - {self.payment_method} ({self.uploaded_at.strftime('%Y-%m-%d %H:%M')})"
+        return f"{self.name or self.user or 'Guest'} - {self.payment_method}"

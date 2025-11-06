@@ -19,7 +19,7 @@ import cloudinary.api
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-7alwxm&uo@2c+olf&0p28kksf)$4+!_c8dngpfhs1^ewr*ba+3'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['pixstore-production.up.railway.app', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://pixstore-production.up.railway.app']
 SESSION_COOKIE_SECURE = True
@@ -154,9 +154,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'youremail@gmail.com'
-EMAIL_HOST_PASSWORD = 'your_app_password'  # Use Gmail App Password
-DEFAULT_FROM_EMAIL = 'PixStore <youremail@gmail.com>'
+EMAIL_HOST_USER = 'itbobo8@googlemail.com'
+EMAIL_HOST_PASSWORD = 'htuh iwfy ratc fgsg'  # Use Gmail App Password
+DEFAULT_FROM_EMAIL = 'PixStore <itbobo8@googlemail.com>'
 
 
 # Force-redeploy 123
