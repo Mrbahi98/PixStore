@@ -302,10 +302,15 @@ from django.contrib import messages
 from .models import PaymentProof, Order
 from .utils import get_cart_count  # adjust if your helper is elsewhere
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Order, PaymentProof
+from .utils import get_cart_count  # if you already have this helper
+
 def upload_payment_proof(request):
     payment_method = request.GET.get('payment_method', '')
 
-    # Define your available accounts
+    # Accounts info
     accounts = []
     if payment_method == "baridimob":
         accounts = [
@@ -319,33 +324,31 @@ def upload_payment_proof(request):
             {"name": "USDT BSC (BEP20)", "address": "0x97a8bf22824ab18eb92a391275ff51b98c1bd2ca"},
         ]
 
+    # Handle proof upload
     if request.method == 'POST' and request.FILES.get('proof'):
         proof = request.FILES['proof']
 
-        # Try to find the latest order for this user
-        order = None
-        if request.user.is_authenticated:
-            order = Order.objects.filter(user=request.user).last()
-        else:
-            order = Order.objects.last()  # fallback — if no user system yet
+        # Get last order
+        order = Order.objects.filter(user=request.user if request.user.is_authenticated else None).last()
 
-        # Extract buyer info
-        buyer_name = getattr(order, 'full_name', None)
-        buyer_email = getattr(order, 'email', None)
-
-        # Save proof to order (if any)
         if order:
-            order.payment_proof = proof
-            order.save()
-
-        # Save in PaymentProof model
-        PaymentProof.objects.create(
-            user=request.user if request.user.is_authenticated else None,
-            name=buyer_name,
-            email=buyer_email,
-            payment_method=payment_method,
-            screenshot=proof
-        )
+            # Save proof to PaymentProof model with user info
+            PaymentProof.objects.create(
+                user=request.user if request.user.is_authenticated else None,
+                name=getattr(order, 'name', None),
+                email=getattr(order, 'email', None),
+                payment_method=payment_method,
+                screenshot=proof
+            )
+        else:
+            # No order found – fallback (still save proof)
+            PaymentProof.objects.create(
+                user=request.user if request.user.is_authenticated else None,
+                name=None,
+                email=None,
+                payment_method=payment_method,
+                screenshot=proof
+            )
 
         messages.success(request, "✅ Payment proof uploaded successfully.")
         return redirect('checkout_success')
@@ -355,4 +358,5 @@ def upload_payment_proof(request):
         'accounts': accounts,
         'cart_count': get_cart_count(request),
     })
+
     return render(request, 'store/upload_payment_proof.html', context)
