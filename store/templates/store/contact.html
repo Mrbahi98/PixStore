@@ -1,0 +1,171 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block content %}
+<main class="contact-container">
+  <div class="contact-card">
+    <h1>Contact PixStore</h1>
+    <p class="subtitle">Have questions or feedback? We’d love to hear from you.</p>
+
+    {% if success %}
+      <div class="success-message">
+        <span>✅</span> Your message was sent successfully.
+      </div>
+    {% endif %}
+
+    <form method="POST" class="contact-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Your full name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Your Email</label>
+        <input type="email" id="email" name="email" placeholder="example@email.com" required>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" placeholder="Type your message..." required></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary">Send Message</button>
+    </form>
+
+    <div class="contact-info">
+      <h2>Other Ways to Reach Us</h2>
+      <div class="contact-links">
+        <a href="https://t.me/CallMe_Bahi" target="_blank" class="contact-link">
+          💬 Telegram
+        </a>
+        <a href="https://wa.me/0665346093" target="_blank" class="contact-link">
+          📱 WhatsApp
+        </a>
+        <a href="mailto:mrbiggy78@gmail.com" class="contact-link">
+          📧 Email
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<style>
+:root {
+  --bg: #0d2438;
+  --accent-start: #ff375f;
+  --accent-end: #00c8ff;
+  --muted: #d4d4d4;
+}
+
+body {
+  background: var(--bg);
+  color: #fff;
+}
+
+.contact-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+}
+
+.contact-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 18px;
+  padding: 40px 50px;
+  width: 100%;
+  max-width: 700px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+.contact-card h1 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+
+.contact-form .form-group {
+  margin-bottom: 20px;
+}
+.contact-form label {
+  display: block;
+  margin-bottom: 6px;
+  color: #cbd5e1;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: white;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--accent-end);
+  outline: none;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.3s, transform 0.2s;
+}
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}
+
+.success-message {
+  background: rgba(0, 255, 136, 0.1);
+  color: #00ff88;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.contact-info {
+  margin-top: 40px;
+  text-align: center;
+}
+.contact-info h2 {
+  font-size: 1.2rem;
+  color: #dbeafe;
+  margin-bottom: 15px;
+}
+.contact-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.contact-link {
+  color: var(--accent-end);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--accent-end);
+  transition: all 0.3s ease;
+}
+.contact-link:hover {
+  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+  color: #fff;
+  border-color: transparent;
+}
+</style>
+{% endblock %}

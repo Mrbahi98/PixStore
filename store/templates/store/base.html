@@ -8,20 +8,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}PixStore{% endblock %}</title>
   <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
+<style>
+  a, a:visited, a:active {
+    color: #9ca3af !important;  /* Tailwind’s gray-400 */
+    text-decoration: none !important;
+    font-weight: 600;
+  }
+
+  a:hover {
+    color: #ffffff !important;
+  }
+</style>
 <body class="bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900 min-h-screen flex flex-col">
 
   <!-- Header -->
   <header class="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 shadow-md">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
       <a href="/" class="flex items-center space-x-2">
-        <img src="{% static 'images/pixstore-logo-v2.png' %}" alt="PixStore Logo" class="h-10 w-auto object-contain drop-shadow-md">
+        <img src="{% static 'images/pixstore-logo-v2.png' %}" alt="PixStore Logo" class="h-10 w-auto object-contain drop-shadow-md "style="
+        width: 80px;
+        height: 80px;
+">
       </a>
       <nav class="flex space-x-6 text-white font-medium"> 
 <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
   {% csrf_token %}
   <select name="language" onchange="this.form.submit()">
-
     <option value="en" {% if LANGUAGE_CODE == 'en' %}selected{% endif %}>🇺🇸 English</option>
     <option value="ar" {% if LANGUAGE_CODE == 'ar' %}selected{% endif %}>🇸🇦 العربية</option>
   </select>
@@ -29,8 +43,7 @@
         <a href="{% url 'home' %}" class="hover:text-yellow-300 transition">{% trans "Home" %}</a>
 <a href="{% url 'products' %}" class="hover:text-yellow-300 transition">{% trans "Products" %}</a>
 <a href="{% url 'cart' %}" class="hover:text-yellow-300 transition relative">
-  {% trans "Cart" %}
-</a>
+  {% trans "Cart" %}</a>
           <span id="cart-count" class="absolute -top-2 -right-4 bg-yellow-300 text-black text-xs font-semibold px-1.5 py-0.5 rounded-full shadow-sm">
             {% if request.user.is_authenticated %}
               {{ cart_count }}
@@ -49,19 +62,59 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 text-center py-6 mt-auto">
-<div>
-  <h3>Contact Us</h3>
-  <p>
-    <a href="mailto:itbobo8@googlemail.com">Email</a> |
-    
-    <a href="https://wa.me/0665346093" target="_blank">WhatsApp</a> |
-    
-    <a href="https://t.me/CallMe_Bahi" target="_blank">Telegram</a>
-  </p>
+  <footer class="bg-gray-900 text-gray-300 py-10">
+  <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+    <!-- Left column -->
+  <div>
+      <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
+      <ul class="space-y-2 text-sm">
+        <li><a href="{% url 'home' %}" class="hover:text-white">Home</a></li>
+        <li><a href="{% url 'products' %}" class="hover:text-white">Products</a></li>
+        <li><a href="{% url 'about' %}" class="hover:text-white">About</a></li>
+        <li><a href="{% url 'contact' %}" class="hover:text-white">Contact Us</a></li>
+      </ul>
+    </div>
+    <!-- Middle column -->
+<div class="flex justify-center text-center">
+  <div>
+    <h3 class="text-white text-lg font-semibold mb-3">About PixStore</h3>
+    <p class="text-sm leading-relaxed">
+      PixStore offers premium digital products — templates, tools, and design assets — all in one place to help you create faster and smarter.
+    </p>
+  </div>
 </div>
-    <p class="text-sm">© 2025 PixStore — All rights reserved.</p>
-  </footer>
+
+        <!-- Right column -->
+    <div class="ml-auto text-right w-fit">
+  <h3 class="text-white text-lg font-semibold mb-3">Contact Us</h3>
+  <ul class="space-y-2 text-sm">
+        <li>
+          <i class="fa-brands fa-telegram mr-2 text-blue-400"></i>
+          <a href="https://t.me/CallMe_Bahi" target="_blank" class="hover:text-white">
+            Telegram
+          </a>
+        </li>
+        <li>
+          <i class="fa-brands fa-whatsapp mr-2 text-green-400"></i>
+          <a href="https://wa.me/+213540138664" target="_blank" class="hover:text-white">
+            WhatsApp
+          </a>
+        </li>
+        <li>
+          <i class="fa-solid fa-envelope mr-2 text-red-400"></i>
+          <a href="mailto:youremail@example.com" class="hover:text-white">
+            Yuvus03_@outlook.com
+          </a>
+        </li>
+      </ul>
+   </div>
+
+  <!-- Bottom Line -->
+  <div class="mt-10 border-t border-white/10 pt-5 text-center text-sm text-gray-500">
+    © {{ now|date:"Y" }} <span class="text-cyan-400 font-semibold">PixStore</span> — All rights reserved.
+  </div>
+</footer>
 <div id="toast-container" style="
   position: fixed;
   top: 20px;

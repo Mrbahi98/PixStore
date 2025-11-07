@@ -6,6 +6,17 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{% trans "PixStore | Digital Products" %}</title>
+<style>
+  a, a:visited, a:active {
+    color: #9ca3af !important;  /* Tailwind’s gray-400 */
+    text-decoration: none !important;
+    font-weight: 600;
+  }
+
+  a:hover {
+    color: #ffffff !important;
+  }
+</style>
 
   <style>
     :root {
@@ -302,8 +313,75 @@
     </div>
   </main>
 
-  <footer>
-    © {{ now|date:"Y" }} PixStore — {% trans "All Rights Reserved." %}
-  </footer>
+ <footer class="bg-[#0d2438] text-gray-300 py-12 border-t border-white/10">
+  <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+    
+    <!-- Column 1: Quick Links -->
+<div>
+  <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">Quick Links</h3>
+  <ul class="space-y-2 text-sm font-semibold">
+    <li>
+      <a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
+        Home
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'products' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
+        Products
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'about' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
+        About
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'contact' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
+        Contact Us
+      </a>
+    </li>
+  </ul>
+</div>
+
+    <!-- Column 2: About -->
+    <div class="text-center md:text-left">
+      <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">About PixStore</h3>
+      <p class="text-sm leading-relaxed text-gray-400">
+        PixStore offers premium digital products — templates, tools, and design assets — all in one place 
+        to help you create faster, smarter, and more beautifully.
+      </p>
+    </div>
+
+    <!-- Column 3: Contact -->
+    <div class="md:text-right">
+      <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">Contact Us</h3>
+      <ul class="space-y-3 text-sm">
+        <li class="flex items-center justify-center md:justify-end space-x-2">
+          <i class="fa-brands fa-telegram text-sky-400 text-lg"></i>
+          <a href="https://t.me/CallMe_Bahi" target="_blank" class="text-gray-400 hover:text-sky-300 transition-colors duration-200">
+            Telegram
+          </a>
+        </li>
+        <li class="flex items-center justify-center md:justify-end space-x-2">
+          <i class="fa-brands fa-whatsapp text-green-400 text-lg"></i>
+          <a href="https://wa.me/+213540138664" target="_blank" class="text-gray-400 hover:text-white-300 transition-colors duration-200">
+            WhatsApp
+          </a>
+        </li>
+        <li class="flex items-center justify-center md:justify-end space-x-2">
+          <i class="fa-solid fa-envelope text-pink-400 text-lg"></i>
+          <a href="mailto:Yuvus03_@outlook.com" class="text-gray-400 hover:text-pink-300 transition-colors duration-200">
+            Yuvus03_@outlook.com
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- Bottom Line -->
+  <div class="mt-10 border-t border-white/10 pt-5 text-center text-sm text-gray-500">
+    © {{ now|date:"Y" }} <span class="text-cyan-400 font-semibold">PixStore</span> — All rights reserved.
+  </div>
+</footer>
+
 </body>
 </html>

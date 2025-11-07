@@ -7,6 +7,7 @@ import json
 from django.contrib import messages
 from django.core.mail import send_mail
 from decimal import Decimal
+from anymail.message import AnymailMessage
 
 # -------------------------------
 # Basic Pages
@@ -258,4 +259,72 @@ def upload_payment_proof(request):
         'cart_count': get_cart_count(request),
     })
 
+#Contact us
 
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        message_text = request.POST.get('message')
+
+        # Compose admin notification email
+        subject = f"📩 New Contact Message from {name}"
+        admin_message_html = f"""
+        <html>
+          <body style="font-family: Arial, sans-serif; background-color:#f7f7f7; padding:20px;">
+            <div style="background:white; border-radius:8px; padding:20px; max-width:600px; margin:auto;">
+              <h2 style="color:#009ffd;">New Contact Message</h2>
+              <p><strong>Name:</strong> {name}</p>
+              <p><strong>Email:</strong> {email}</p>
+              <p><strong>Message:</strong><br>{message_text.replace('\n','<br>')}</p>
+              <hr style="margin:20px 0;">
+              <p style="font-size:13px;color:#777;">Sent from PixStore Contact Page</p>
+            </div>
+          </body>
+        </html>
+        """
+
+        try:
+            # Send to admin (you)
+            admin_msg = AnymailMessage(
+                subject=subject,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[settings.DEFAULT_FROM_EMAIL],
+                reply_to=[email],
+            )
+            admin_msg.attach_alternative(admin_message_html, "text/html")
+            admin_msg.send()
+
+            # Send confirmation email to user
+            confirm_subject = "✅ Thanks for contacting PixStore!"
+            confirm_html = f"""
+            <html>
+              <body style="font-family: Arial, sans-serif; background-color:#f4f4f4; padding:20px;">
+                <div style="background:white; border-radius:8px; padding:20px; max-width:600px; margin:auto;">
+                  <h2 style="color:#009ffd;">Hey {name},</h2>
+                  <p>Thanks for reaching out to <strong>PixStore</strong>! We’ve received your message and will get back to you soon.</p>
+                  <p><strong>Your message:</strong></p>
+                  <blockquote style="color:#555;">{message_text.replace('\n','<br>')}</blockquote>
+                  <hr style="margin:20px 0;">
+                  <p style="font-size:13px;color:#777;">This is an automated confirmation from PixStore.</p>
+                </div>
+              </body>
+            </html>
+            """
+
+            confirm_msg = AnymailMessage(
+                subject=confirm_subject,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[email],
+            )
+            confirm_msg.attach_alternative(confirm_html, "text/html")
+            confirm_msg.send()
+
+            success = True
+        except Exception as e:
+            print("Error sending email via Brevo:", e)
+            success = False
+
+        return render(request, 'store/contact.html', {'success': success})
+
+    return render(request, 'store/contact.html')
