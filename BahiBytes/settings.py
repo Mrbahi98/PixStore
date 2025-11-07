@@ -158,5 +158,8 @@ EMAIL_HOST_USER = 'itbobo8@googlemail.com'
 EMAIL_HOST_PASSWORD = 'htuh iwfy ratc fgsg'  # Use Gmail App Password
 DEFAULT_FROM_EMAIL = 'PixStore <itbobo8@googlemail.com>'
 
-
+if not DEBUG:
+    # Temporarily log emails instead of sending
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    
 # Force-redeploy 123
