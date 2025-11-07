@@ -35,12 +35,12 @@ INSTALLED_APPS = [
 
     # must come before staticfiles
     'cloudinary_storage',
-
     'django.contrib.staticfiles',
 
     # 3rd party
     'cloudinary',
     'tailwind',
+    'anymail',
 
     # Local apps
     'store',
@@ -150,12 +150,10 @@ if DEBUG:
     MIDDLEWARE += ['django_browser_reload.middleware.BrowserReloadMiddleware']
 
 # EMAIL SETTINGS
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp-relay.brevo.com"
-EMAIL_PORT = 465
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = "itbobo8@googlemail.com"
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+ANYMAIL = {
+    "BREVO_API_KEY": os.environ.get('EMAIL_HOST_PASSWORD'),
+}
 DEFAULT_FROM_EMAIL = "itbobo8@googlemail.com"
+
 #Force-redeploy 123
