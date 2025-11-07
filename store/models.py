@@ -78,7 +78,7 @@ class PaymentProof(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
     payment_method = models.CharField(max_length=50, choices=PAYMENT_METHODS)
-    screenshot = models.ImageField(upload_to='payment_proofs/')
+    screenshot = CloudinaryField('image', folder='payment_proofs/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
