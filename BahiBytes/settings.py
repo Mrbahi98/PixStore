@@ -151,9 +151,16 @@ if DEBUG:
 
 # EMAIL SETTINGS
 EMAIL_BACKEND = "anymail.backends.brevo.EmailBackend"
+
 ANYMAIL = {
-    "BREVO_API_KEY": os.environ.get('EMAIL_HOST_PASSWORD'),
+    "BREVO_API_KEY": os.environ.get("BREVO_API_KEY"),
 }
-DEFAULT_FROM_EMAIL = "itbobo8@googlemail.com"
+DEFAULT_FROM_EMAIL = "itbobo8@googlemail.com"   # Verified in Brevo
+
+_raw_admins = os.getenv("ADMIN_NOTIFICATION_EMAILS", "itbobo8@googlemail.com, yuvus03_@outlook.com")
+ADMIN_NOTIFICATION_EMAILS = [e.strip() for e in _raw_admins.split(",") if e.strip()]
+
+# exchange rate used to compute USD from DZD (change value to current rate)
+DZD_PER_USD = float(os.getenv("DZD_PER_USD", "255.0"))
 
 #Force-redeploy 123

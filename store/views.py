@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from decimal import Decimal
 from anymail.message import AnymailMessage
+import logging
 
 # -------------------------------
 # Basic Pages
@@ -210,9 +211,9 @@ def upload_payment_proof(request):
         if order_id:
             order = Order.objects.filter(id=order_id).first()
 
-        # Fallback for authenticated users if session was lost
+        # Fallback for authenticated users
         if not order and request.user.is_authenticated:
-             order = Order.objects.filter(user=request.user).order_by('-created_at').first()
+            order = Order.objects.filter(user=request.user).order_by('-created_at').first()
 
         if order:
             PaymentProof.objects.create(
@@ -224,6 +225,8 @@ def upload_payment_proof(request):
             )
 
             # Send notification email
+            recipient_list = settings.ADMIN_NOTIFICATION_EMAILS.copy()
+
             send_mail(
                 subject=f"New Payment Proof Uploaded - Order #{order.id}",
                 message=(
@@ -233,12 +236,12 @@ def upload_payment_proof(request):
                     f"Email: {order.email or 'Unknown'}\n"
                     f"Payment Method: {payment_method}\n"
                     f"Total Price: {order.total_price}\n"
-                    f"---\n"
-                    f"Please review it in the Django admin panel."
+                    "---\n"
+                    "Please review it in the Django admin panel."
                 ),
                 from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[settings.DEFAULT_FROM_EMAIL],
-                fail_silently=True,
+                recipient_list=recipient_list,
+                fail_silently=False,
             )
 
             # Clear cart and session data only after successful upload
@@ -249,6 +252,7 @@ def upload_payment_proof(request):
 
             messages.success(request, "✅ Payment proof uploaded successfully.")
             return redirect('checkout_success')
+
         else:
             messages.error(request, "❌ Could not find your order. Please try placing it again.")
             return redirect('cart')
