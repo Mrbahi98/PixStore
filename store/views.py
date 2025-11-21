@@ -8,7 +8,11 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from decimal import Decimal
 from anymail.message import AnymailMessage
+from django.template.loader import render_to_string
+import threading
 import logging
+
+logger = logging.getLogger(__name__)
 
 # -------------------------------
 # Basic Pages
@@ -122,18 +126,51 @@ def my_orders(request):
 # -------------------------------
 # CHECKOUT SUMMARY
 # -------------------------------
+def _send_order_confirmation(order_id):
+    """
+    Background worker to send an order confirmation.
+    Keep this at module scope (not inside the view) so it can be reused / tested.
+    """
+    try:
+        o = Order.objects.get(pk=order_id)
+        if not o.email:
+            logger.info("Order %s has no email; skipping confirmation send.", order_id)
+            return
+        ctx = {"order": o, "name": o.name or "Customer"}
+        plain = render_to_string("store/emails/order_confirmation.txt", ctx)
+        html = render_to_string("store/emails/order_confirmation.html", ctx)
+
+        msg = AnymailMessage(
+            subject=f"✅ Order Confirmation — PixStore #{o.id}",
+            body=plain,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            to=[o.email],
+        )
+        msg.attach_alternative(html, "text/html")
+        msg.send()
+        logger.info("Sent order confirmation for order %s to %s", order_id, o.email)
+    except Exception:
+        logger.exception("Order confirmation send failed for order %s", order_id)
+
+
 def checkout_summary(request):
     cart = request.session.get('cart', {})
     if not cart:
         messages.info(request, "Your cart is empty.")
         return redirect('products')
 
-    products = Product.objects.filter(pk__in=cart.keys())
+    # convert keys to ints to avoid DB mismatch
+    try:
+        cart_product_ids = [int(k) for k in cart.keys()]
+    except Exception:
+        cart_product_ids = list(cart.keys())
+
+    products = Product.objects.filter(pk__in=cart_product_ids)
     cart_items = []
     total_price = Decimal('0.00')
 
     for product in products:
-        qty = cart[str(product.pk)]
+        qty = cart.get(str(product.pk), 0)
         item_total = product.price * qty
         total_price += item_total
         cart_items.append({
@@ -143,9 +180,9 @@ def checkout_summary(request):
         })
 
     if request.method == 'POST':
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        payment_method = request.POST.get('payment_method')
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        payment_method = request.POST.get('payment_method', '').strip()
 
         # Create order
         order = Order.objects.create(
@@ -168,6 +205,13 @@ def checkout_summary(request):
         request.session['last_order_id'] = order.id
         # Do NOT clear cart here. Wait for proof upload.
 
+        # --- send customer confirmation (non-blocking) ---
+        # Start background thread here while still in scope of `order`
+        try:
+            threading.Thread(target=_send_order_confirmation, args=(order.id,), daemon=True).start()
+        except Exception:
+            logger.exception("Failed to start order confirmation thread for order %s", order.id)
+
         return redirect(f"{reverse('upload_payment_proof')}?payment_method={payment_method}")
 
     return render(request, 'store/checkout_summary.html', {
@@ -175,13 +219,6 @@ def checkout_summary(request):
         'total_price': total_price,
         'cart_count': get_cart_count(request)
     })
-
-
-def checkout_success(request):
-    return render(request, 'store/checkout_success.html', {
-        'cart_count': get_cart_count(request)
-    })
-
 
 # -------------------------------
 # UPLOAD PAYMENT PROOF
@@ -264,7 +301,6 @@ def upload_payment_proof(request):
     })
 
 #Contact us
-
 def contact(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -315,7 +351,6 @@ def contact(request):
               </body>
             </html>
             """
-
             confirm_msg = AnymailMessage(
                 subject=confirm_subject,
                 from_email=settings.DEFAULT_FROM_EMAIL,
