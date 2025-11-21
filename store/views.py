@@ -220,6 +220,12 @@ def checkout_summary(request):
         'cart_count': get_cart_count(request)
     })
 
+
+def checkout_success(request):
+    return render(request, 'store/checkout_success.html', {
+        'cart_count': get_cart_count(request)
+    })
+
 # -------------------------------
 # UPLOAD PAYMENT PROOF
 # -------------------------------
