@@ -1,0 +1,18 @@
+مرحباً {{ name }},
+
+شكراً لتسوقك معنا في PixStore!
+
+رقم الطلب: {{ order.id }}
+المجموع: {{ order.total_price }}
+
+المنتجات:
+{% for item in order.items.all %}
+- {{ item.product.name }} ×{{ item.quantity }} — {{ item.price }}
+{% endfor %}
+
+سوف نوافيك بتحديث عندما يتم تأكيد الدفع وعند ارسال الطلب.
+
+إذا كنت بحاجة إلى أي مساعدة، لا تتردد في التواصل معنا
+
+تحياتنا الخالصة،  
+فريق PixStore
