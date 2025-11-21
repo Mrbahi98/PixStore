@@ -43,15 +43,15 @@ def add_to_cart(request, product_id):
     return redirect(f"{next_url}?added=1")
 
 
-def remove_from_cart(request, product_id):
-    cart = request.session.get('cart', {})
-    product_id = str(product_id)
-    if product_id in cart:
-        del cart[product_id]
-    request.session['cart'] = cart
-    request.session.modified = True
+def remove_from_cart(request):
+    if request.method == 'POST':
+        cart = request.session.get('cart', {})
+        product_id = str(request.POST.get('product_id', ''))
+        if product_id in cart:
+            del cart[product_id]
+            request.session['cart'] = cart
+            request.session.modified = True
     return redirect('cart')
-
 
 # ✅ ADDED MISSING FUNCTION TO MATCH URLS.PY
 def update_cart_item(request):

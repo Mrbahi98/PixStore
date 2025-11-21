@@ -90,11 +90,11 @@
               <input type="hidden" name="action" value="increase">
               <button class="btn incr">+</button>
             </form>
-            <form method="post" style="display:inline;">{% csrf_token %}
-              <input type="hidden" name="product_id" value="{{ item.product.id }}">
-<input type="hidden" name="action" value="remove">
-              <button class="btn rm">{% trans "Remove" %}</button>
-            </form>
+           <form method="post" action="{% url 'remove_from_cart' %}" style="display:inline;">
+  {% csrf_token %}
+  <input type="hidden" name="product_id" value="{{ item.product.id }}">
+  <button type="submit" class="btn rm">{% trans "Remove" %}</button>
+</form>
           </div>
           <div style="margin-top:8px; font-weight:700;">
             {% trans "Item total" %}: ${{ item.item_total }}
