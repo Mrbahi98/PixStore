@@ -1,18 +1,18 @@
 مرحباً {{ name }},
 
-شكراً لتسوقك معنا في PixStore!
+شكراً لتسوقك في PixStore!
 
 رقم الطلب: {{ order.id }}
-المجموع: {{ order.total_price }}
+المجموع: {{ order.total_price }} دج ({{ order.total_price|usd|floatformat:2 }} USD)
 
 المنتجات:
 {% for item in order.items.all %}
-- {{ item.product.name }} ×{{ item.quantity }} — {{ item.price }}
+- {{ item.product.name }} ×{{ item.quantity }} — {{ item.price }} دج
 {% endfor %}
 
-سوف نوافيك بتحديث عندما يتم تأكيد الدفع وعند ارسال الطلب.
+لمعرفة حالة طلبك، قم بزيارة: {{ site_url|default:'' }}{% url 'my_orders' %}
 
-إذا كنت بحاجة إلى أي مساعدة، لا تتردد في التواصل معنا
+للتواصل: itbobo8@googlemail.com
 
-تحياتنا الخالصة،  
+مع تحيات،
 فريق PixStore

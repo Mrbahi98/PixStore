@@ -127,30 +127,41 @@ def my_orders(request):
 # CHECKOUT SUMMARY
 # -------------------------------
 def _send_order_confirmation(order_id):
-    """
-    Background worker to send an order confirmation.
-    Keep this at module scope (not inside the view) so it can be reused / tested.
-    """
     try:
         o = Order.objects.get(pk=order_id)
         if not o.email:
-            logger.info("Order %s has no email; skipping confirmation send.", order_id)
             return
-        ctx = {"order": o, "name": o.name or "Customer"}
-        plain = render_to_string("store/emails/order_confirmation.txt", ctx)
-        html = render_to_string("store/emails/order_confirmation.html", ctx)
+
+        from django.template.loader import render_to_string
+        from anymail.message import AnymailMessage
+
+        ctx = {
+            "order": o,
+            "name": o.name or "Customer",
+            "site_url": "https://pixstore-production.up.railway.app"  # your real domain
+        }
+
+        # Render templates
+        plain = render_to_string(
+            "store/emails/order_confirmation_brand.txt",
+            ctx
+        )
+        html = render_to_string(
+            "store/emails/order_confirmation_brand.html",
+            ctx
+        )
 
         msg = AnymailMessage(
-            subject=f"✅ Order Confirmation — PixStore #{o.id}",
+            subject=f"تأكيد الطلب — PixStore #{o.id}",
             body=plain,
-            from_email=settings.DEFAULT_FROM_EMAIL,
+            from_email="PixStore <itbobo8@googlemail.com>",
             to=[o.email],
         )
         msg.attach_alternative(html, "text/html")
         msg.send()
-        logger.info("Sent order confirmation for order %s to %s", order_id, o.email)
+
     except Exception:
-        logger.exception("Order confirmation send failed for order %s", order_id)
+        logging.exception("Order confirmation send failed for order %s", order_id)
 
 
 def checkout_summary(request):
