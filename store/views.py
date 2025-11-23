@@ -143,11 +143,11 @@ def _send_order_confirmation(order_id):
 
         # Render templates
         plain = render_to_string(
-            "store/emails/order_confirmation_brand.txt",
+            "store/emails/order_confirmation.txt",
             ctx
         )
         html = render_to_string(
-            "store/emails/order_confirmation_brand.html",
+            "store/emails/order_confirmation.html",
             ctx
         )
 
