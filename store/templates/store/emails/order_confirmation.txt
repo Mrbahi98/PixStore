@@ -1,3 +1,5 @@
+{% load currency_filters %}
+
 مرحباً {{ name }},
 
 شكراً لتسوقك في PixStore!
@@ -16,3 +18,5 @@
 
 مع تحيات،
 فريق PixStore
+
+
