@@ -161,6 +161,6 @@ _raw_admins = os.getenv("ADMIN_NOTIFICATION_EMAILS", "itbobo8@googlemail.com, yu
 ADMIN_NOTIFICATION_EMAILS = [e.strip() for e in _raw_admins.split(",") if e.strip()]
 
 # exchange rate used to compute USD from DZD (change value to current rate)
-DZD_PER_USD = float(os.getenv("DZD_PER_USD", "255.0"))
+DZD_PER_USD = float(os.getenv("DZD_PER_USD", "250.0"))
 
 #Force-redeploy 123
