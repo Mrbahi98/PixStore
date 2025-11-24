@@ -216,13 +216,6 @@ def checkout_summary(request):
         request.session['last_order_id'] = order.id
         # Do NOT clear cart here. Wait for proof upload.
 
-        # --- send customer confirmation (non-blocking) ---
-        # Start background thread here while still in scope of `order`
-        try:
-            threading.Thread(target=_send_order_confirmation, args=(order.id,), daemon=True).start()
-        except Exception:
-            logger.exception("Failed to start order confirmation thread for order %s", order.id)
-
         return redirect(f"{reverse('upload_payment_proof')}?payment_method={payment_method}")
 
     return render(request, 'store/checkout_summary.html', {
