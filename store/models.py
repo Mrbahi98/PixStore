@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, get_user_model
 from cloudinary.models import CloudinaryField
 from decimal import Decimal
 
