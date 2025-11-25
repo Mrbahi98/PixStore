@@ -4,8 +4,6 @@ from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from decimal import Decimal
 
-User = get_user_model()
-
 # ------------------------------
 # CATEGORY MODEL
 # ------------------------------
@@ -39,6 +37,8 @@ class Product(models.Model):
 # ------------------------------
 # ORDER MODEL
 # ------------------------------
+User = get_user_model()
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ('pending', 'Pending — awaiting payment'),
