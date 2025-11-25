@@ -87,10 +87,7 @@
               {% endfor %}
             </div>
 
-            <div class="totals">
-              <a class="btn-primary" href="{% url 'upload_payment_proof' %}?payment_method={{ order.payment_method|default:'' }}">تحميل إثبات الدفع</a>
-              <a class="btn-primary" href="{% url 'checkout_success' %}">تفاصيل الطلب</a>
-            </div>
+          
           </div>
         {% endfor %}
       {% else %}
