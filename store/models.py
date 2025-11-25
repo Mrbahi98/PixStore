@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User, get_user_model
+from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from decimal import Decimal
 
@@ -37,6 +37,8 @@ class Product(models.Model):
 # ------------------------------
 # ORDER MODEL
 # ------------------------------
+from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 class Order(models.Model):
