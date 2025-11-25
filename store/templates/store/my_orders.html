@@ -1,56 +1,106 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% load currency_filters %}
+
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Orders | PixStore</title>
-  <link rel="stylesheet" href="{% static 'css/output.css' %}">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>طلباتي — PixStore</title>
+  <style>
+    :root{
+      --bg:#0d2438;
+      --card:#071422;
+      --accent-start:#ff375f;
+      --accent-end:#00c8ff;
+      --muted:#9fb0c0;
+      --text:#ffffff;
+    }
+    body{margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:var(--text);}
+    .site-container{max-width:1100px; margin:24px auto; padding:20px;}
+    .header-row{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:18px;}
+    .logo{display:flex; align-items:center; gap:12px}
+    .title{font-size:22px; font-weight:800;}
+    .card{background:rgba(255,255,255,0.02); border-radius:12px; padding:18px; box-shadow:0 8px 20px rgba(0,0,0,0.45);}
+    .order{background:var(--card); border-radius:10px; padding:16px; margin-bottom:12px;}
+    .order-head{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:8px;}
+    .order-id{font-weight:700;}
+    .order-meta{color:var(--muted); font-size:13px;}
+    .items{margin-top:8px;}
+    .item{display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-top:1px dashed rgba(255,255,255,0.03);}
+    .item:first-child{border-top:none;}
+    .item .name{font-weight:600;}
+    .totals{margin-top:12px; display:flex; justify-content:flex-end; gap:12px; align-items:center;}
+    .btn-primary{background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; padding:8px 12px; border-radius:8px; text-decoration:none; font-weight:700;}
+    .empty{padding:36px; text-align:center; color:var(--muted);}
+    .lookup-form{display:flex; gap:8px; justify-content:center; margin-bottom:18px;}
+    .lookup-form input[type="email"]{padding:10px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--text);}
+    .lookup-form button{padding:10px 12px; border-radius:8px; background:transparent; border:1px solid var(--accent-end); color:var(--accent-end); font-weight:700;}
+    @media (max-width:640px){ .order-head{flex-direction:column; align-items:flex-start} .totals{justify-content:flex-start} }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
-
-<header class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="/" class="text-2xl font-bold text-blue-600">PixStore</a>
-    <nav class="space-x-6">
-      <a href="{% url 'home' %}" class="text-gray-700 hover:text-blue-600">Home</a>
-      <a href="{% url 'products' %}" class="text-gray-700 hover:text-blue-600">Products</a>
-      <a href="{% url 'cart' %}" class="text-gray-700 hover:text-blue-600">Cart</a>
-    </nav>
-  </div>
-</header>
-
-<main class="max-w-5xl mx-auto px-6 py-12">
-  <h1 class="text-3xl font-bold mb-8">My Orders</h1>
-
-  {% if orders %}
-  <div class="space-y-6">
-    {% for order in orders %}
-    <div class="bg-white rounded-lg shadow p-6">
-      <div class="flex justify-between items-center mb-4">
-        <div>
-          <h2 class="text-lg font-semibold">Order #{{ order.id }}</h2>
-          <p class="text-sm text-gray-500">Placed on {{ order.created_at|date:"M d, Y H:i" }}</p>
-        </div>
-        <span class="text-blue-600 font-semibold">${{ order.total_price }}</span>
+<body>
+  <div class="site-container">
+    <div class="header-row">
+      <div class="logo">
+        <img src="{% static 'images/pixstore-logo-v2.png' %}" alt="PixStore" width="120" style="display:block;" />
       </div>
-
-      <div class="border-t pt-4 space-y-2">
-        {% for item in order.items.all %}
-          <p class="text-gray-700">{{ item.product.name }} × {{ item.quantity }}</p>
-        {% endfor %}
-      </div>
+      <div class="title">طلباتي</div>
     </div>
-    {% endfor %}
+
+    <div class="card">
+      {% if user.is_authenticated %}
+        <p class="order-meta">مرحباً {{ user.get_full_name|default:user.username }}, هذه قائمة طلباتك السابقة.</p>
+      {% else %}
+        <p class="order-meta">هل تريد عرض طلبك؟ أدخل البريد الذي استخدمته عند الشراء.</p>
+
+        <form method="post" class="lookup-form">
+          {% csrf_token %}
+          <input type="email" name="email" placeholder="بريدك الإلكتروني" required value="{{ lookup_email|default:'' }}" />
+          <button type="submit">اعرض الطلبات</button>
+        </form>
+      {% endif %}
+
+      {% if orders %}
+        {% for order in orders %}
+          <div class="order">
+            <div class="order-head">
+              <div>
+                <div class="order-id">رقم الطلب: #{{ order.id }}</div>
+                <div class="order-meta">تم الإنشاء: {{ order.created_at|date:"Y-m-d H:i" }}</div>
+              </div>
+              <div style="text-align:left;">
+                <div class="order-meta">الحالة: {% if order.paid %}مدفوع{% else %}بانتظار الدفع{% endif %}</div>
+                <div style="margin-top:8px; font-weight:800;">{{ order.total_price }} دج <span style="color:var(--muted); font-weight:600;">({{ order.total_price|usd|floatformat:2 }} USD)</span></div>
+              </div>
+            </div>
+
+            <div class="items">
+              {% for item in order.items.all %}
+                <div class="item">
+                  <div>
+                    <div class="name">{{ item.product.name }}</div>
+                    <div class="order-meta">{{ item.price }} دج × {{ item.quantity }}</div>
+                  </div>
+                  <div style="white-space:nowrap; color:var(--muted)">{{ item.price|floatformat:0|add:'0' }}</div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <div class="totals">
+              <a class="btn-primary" href="{% url 'upload_payment_proof' %}?payment_method={{ order.payment_method|default:'' }}">تحميل إثبات الدفع</a>
+              <a class="btn-primary" href="{% url 'checkout_success' %}">تفاصيل الطلب</a>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty">
+          <p style="font-size:18px; font-weight:700; color:#fff;">لا توجد طلبات للعرض</p>
+          <p style="margin-top:8px; color:var(--muted);">إذا قمت بشراء منتج مؤخراً، تأكد من أنك سجلت بالبريد نفسه أو جرّب البحث عبر البريد الإلكتروني أعلاه.</p>
+          <p style="margin-top:12px;"><a class="btn-primary" href="{% url 'products' %}">تسوق الآن</a></p>
+        </div>
+      {% endif %}
+    </div>
   </div>
-  {% else %}
-  <p>You haven’t placed any orders yet.</p>
-  {% endif %}
-</main>
-
-<footer class="bg-white py-6 border-t mt-16 text-center text-gray-500 text-sm">
-  © {{ now|date:"Y" }} PixStore. All rights reserved.
-</footer>
-
 </body>
 </html>

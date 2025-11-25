@@ -114,14 +114,33 @@ def cart_view(request):
 # -------------------------------
 # ORDERS
 # -------------------------------
-def my_orders(request):
-    if request.user.is_authenticated:
-        # Ensure 'items' matches the related_name in your OrderItem model
-        orders = Order.objects.filter(user=request.user).prefetch_related('items').order_by('-created_at')
-    else:
-        orders = []
-    return render(request, 'store/my_orders.html', {'orders': orders})
+from django.db.models import Prefetch
 
+def my_orders(request):
+    """
+    Show orders for authenticated users, or allow guest email lookup.
+    If user is not logged in, show a small form to enter an email to lookup orders.
+    """
+    orders = []
+    lookup_email = None
+    if request.user.is_authenticated:
+        orders = Order.objects.filter(user=request.user).prefetch_related(
+            Prefetch('items', queryset=OrderItem.objects.select_related('product'))
+        ).order_by('-created_at')
+    else:
+        # If guest submitted an email to lookup orders (optional)
+        if request.method == 'POST':
+            lookup_email = request.POST.get('email', '').strip()
+            if lookup_email:
+                orders = Order.objects.filter(email__iexact=lookup_email).prefetch_related(
+                    Prefetch('items', queryset=OrderItem.objects.select_related('product'))
+                ).order_by('-created_at')
+
+    return render(request, 'store/my_orders.html', {
+        'orders': orders,
+        'lookup_email': lookup_email,
+        'cart_count': get_cart_count(request),
+    })
 
 # -------------------------------
 # CHECKOUT SUMMARY
