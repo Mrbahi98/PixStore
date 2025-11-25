@@ -70,7 +70,17 @@
                 <div class="order-meta">تم الإنشاء: {{ order.created_at|date:"Y-m-d H:i" }}</div>
               </div>
               <div style="text-align:left;">
-                <div class="order-meta">الحالة: {% if order.paid %}مدفوع{% else %}بانتظار الدفع{% endif %}</div>
+                <div class="order-meta">الحالة:
+{% if order.status == "pending" %}
+    <span style="color:#facc15;">بانتظار الدفع</span>
+{% elif order.status == "review" %}
+    <span style="color:#38bdf8;">قيد المراجعة</span>
+{% elif order.status == "confirmed" %}
+    <span style="color:#4ade80;">تم تأكيد الدفع</span>
+{% elif order.status == "sent" %}
+    <span style="color:#a78bfa;">تم إرسال المنتجات</span>
+{% endif %}
+</div>
                 <div style="margin-top:8px; font-weight:800;">{{ order.total_price }} دج <span style="color:var(--muted); font-weight:600;">({{ order.total_price|usd|floatformat:2 }} USD)</span></div>
               </div>
             </div>
