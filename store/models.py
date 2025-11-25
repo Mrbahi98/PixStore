@@ -2,7 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
+from decimal import Decimal
 
+User = get_user_model()
 
 # ------------------------------
 # CATEGORY MODEL
@@ -38,22 +40,39 @@ class Product(models.Model):
 # ORDER MODEL
 # ------------------------------
 class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending — awaiting payment'),
+        ('review', 'Payment under review'),
+        ('confirmed', 'Payment confirmed'),
+        ('sent', 'Products delivered'),
+    ]
+
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal('0.00'))
     paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
     def __str__(self):
-        # Prefer name > username > Guest
         display_name = self.name or (self.user.username if self.user else "Guest")
-        return f"Order #{self.id} - {display_name}"
+        return f"Order #{self.id or 'unsaved'} - {display_name}"
 
     def get_total_price(self):
-        # Compute from related items
-        total = sum(item.price * item.quantity for item in self.orderitem_set.all())
-        return total
+        """
+        Compute total from related OrderItem rows.
+        Returns a Decimal.
+        """
+        total = Decimal('0.00')
+        for item in self.items.all():  # related_name='items'
+            total += (item.price or Decimal('0.00')) * item.quantity
+        return total.quantize(Decimal('0.01'))
 
 
 class OrderItem(models.Model):
@@ -64,6 +83,7 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} × {self.quantity}"
+
 
 # ------------------------------
 # PAYMENT PROOF MODEL
