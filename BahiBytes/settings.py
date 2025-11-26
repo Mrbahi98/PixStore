@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'anymail',
 
     # Local apps
-    'store',
+    'store.apps.StoreConfig',
     'theme',
 ]
 
