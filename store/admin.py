@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, Order, OrderItem
+from .models import Product, Order
 from .models import PaymentProof
 from django.utils.html import format_html
 
@@ -23,9 +23,18 @@ class PaymentProofAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'email', 'total_price', 'status', 'created_at')
     list_filter = ('status', 'created_at')
-    search_fields = ('id', 'name', 'email')
+    search_fields = ('name', 'email', 'id')
 
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'order', 'product', 'quantity', 'price')
-    search_fields = ('order__id', 'product__name')
+    actions = ['mark_as_review', 'mark_as_confirmed', 'mark_as_sent']
+
+    def mark_as_review(self, request, queryset):
+        queryset.update(status='review')
+    mark_as_review.short_description = "Mark as Payment Under Review"
+
+    def mark_as_confirmed(self, request, queryset):
+        queryset.update(status='confirmed')
+    mark_as_confirmed.short_description = "Mark as Payment Confirmed"
+
+    def mark_as_sent(self, request, queryset):
+        queryset.update(status='sent')
+    mark_as_sent.short_description = "Mark as Products Delivered"
