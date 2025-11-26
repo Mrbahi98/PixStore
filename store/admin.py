@@ -1,11 +1,12 @@
 from django.contrib import admin
-from .models import Product
+from .models import Product, Order, OrderItem
 from .models import PaymentProof
 from django.utils.html import format_html
 
 admin.site.register(Product)
-
 @admin.register(PaymentProof)
+@admin.register(Order)
+
 class PaymentProofAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'user', 'payment_method', 'uploaded_at', 'preview_image')
     readonly_fields = ('uploaded_at',)
@@ -19,23 +20,12 @@ class PaymentProofAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email', 'payment_method')
     list_filter = ('payment_method',)
 
-from .models import Order
-@admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'email', 'total_price', 'status', 'created_at')
     list_filter = ('status', 'created_at')
-    search_fields = ('name', 'email', 'id')
+    search_fields = ('id', 'name', 'email')
 
-    actions = ['mark_as_review', 'mark_as_confirmed', 'mark_as_sent']
-
-    def mark_as_review(self, request, queryset):
-        queryset.update(status='review')
-    mark_as_review.short_description = "Mark as Payment Under Review"
-
-    def mark_as_confirmed(self, request, queryset):
-        queryset.update(status='confirmed')
-    mark_as_confirmed.short_description = "Mark as Payment Confirmed"
-
-    def mark_as_sent(self, request, queryset):
-        queryset.update(status='sent')
-    mark_as_sent.short_description = "Mark as Products Delivered"
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'order', 'product', 'quantity', 'price')
+    search_fields = ('order__id', 'product__name')
