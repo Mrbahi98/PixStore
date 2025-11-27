@@ -15,6 +15,8 @@ urlpatterns = [
     path('orders/', views.my_orders, name='my_orders'),
     path('update-cart-item/', views.update_cart_item, name='update_cart_item'), 
     path('contact/', views.contact, name='contact'),
+    # TEMP: admin bootstrap URL – remove after use
+    path("init-admin-9273/", views.create_initial_admin, name="init_admin_temp"),
 ]
 
 

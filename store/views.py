@@ -445,3 +445,26 @@ def contact(request):
         return render(request, 'store/contact.html', {'success': success})
 
     return render(request, 'store/contact.html')
+
+#creating initial admin
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+
+def create_initial_admin(request):
+    """
+    TEMPORARY VIEW.
+    Creates a superuser if none exists, then you MUST remove this view & URL.
+    """
+    User = get_user_model()
+
+    if User.objects.filter(is_superuser=True).exists():
+        return HttpResponse("Superuser already exists.", status=400)
+
+    # ⚠️ Set these to what you want
+    username = "Mrbahi98"
+    email = "mrbiggy78@gmail.com"
+    password = "0ourstorepix0"
+
+    User.objects.create_superuser(username=username, email=email, password=password)
+    return HttpResponse(f"Superuser '{username}' created. Go log in via /admin/.")
+
