@@ -294,9 +294,9 @@ gtag('config', 'G-0E1YGYRDG7');
 
           <a href="{% url 'product_detail' product.pk %}" class="btn-accent">{% trans "View Details" %}</a>
 
-         <form method="post" action="{% url 'add_to_cart' product.pk %}?next={{ request.path }}" style="margin-top:6px;">
+         <form method="post" action="{% url 'add_to_cart' product.pk %}?next={% url 'cart' %}" style="margin-top:6px;">
             {% csrf_token %}
-            <input type="hidden" name="next" value="{{ request.path }}">
+            <input type="hidden" name="next" value="{% url 'cart' %}">
             <button type="submit" class="btn-accent" style="width:100%;">{% trans "Add to Cart" %}</button>
           </form>
         </div>

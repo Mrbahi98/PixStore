@@ -43,7 +43,7 @@ def add_to_cart(request, product_id):
     request.session['cart'] = cart
     request.session.modified = True
 
-    next_url = request.GET.get('next', reverse('products'))
+    next_url = request.GET.get('next', reverse('cart'))
     return redirect(f"{next_url}?added=1")
 
 
