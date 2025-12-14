@@ -39,23 +39,25 @@ def product_detail(request, pk):
 def add_to_cart(request, product_id):
     cart = request.session.get('cart', {})
     product_id = str(product_id)
+
     cart[product_id] = cart.get(product_id, 0) + 1
     request.session['cart'] = cart
     request.session.modified = True
 
-    next_url = request.GET.get('next', reverse('cart'))
-    return redirect(f"{next_url}?added=1")
-
+    # Always go to checkout (no cart page)
+    return redirect('checkout_summary')
 
 def remove_from_cart(request):
     if request.method == 'POST':
         cart = request.session.get('cart', {})
         product_id = str(request.POST.get('product_id', ''))
+
         if product_id in cart:
             del cart[product_id]
             request.session['cart'] = cart
             request.session.modified = True
-    return redirect('cart')
+
+    return redirect('checkout_summary')
 
 # ✅ ADDED MISSING FUNCTION TO MATCH URLS.PY
 def update_cart_item(request):
@@ -89,6 +91,7 @@ def update_cart_item(request):
 
 
 def cart_view(request):
+    return redirect('checkout_summary')
     cart = request.session.get('cart', {})
     products = Product.objects.filter(pk__in=cart.keys())
     cart_items = []
@@ -110,6 +113,18 @@ def cart_view(request):
         'cart_count': get_cart_count(request)
     })
 
+def cancel_order(request):
+    # Optional: clear cart
+    request.session['cart'] = {}
+    request.session.modified = True
+
+    # Optional: remove last order if it exists
+    last_order_id = request.session.get('last_order_id')
+    if last_order_id:
+        Order.objects.filter(id=last_order_id).delete()
+        del request.session['last_order_id']
+
+    return redirect('products')
 
 # -------------------------------
 # ORDERS

@@ -86,3 +86,19 @@
 .footer .contact-list li a:hover {
   color: #00ffcc;
 }
+
+.btn-danger-solid {
+    width: 100%;
+    background-color: #dc2626;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-danger-solid:hover {
+    background-color: #b91c1c;
+}
+

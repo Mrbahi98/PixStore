@@ -268,7 +268,6 @@
       <nav>
         <a href="{% url 'home' %}">{% trans "Home" %}</a>
         <a href="{% url 'products' %}">{% trans "Products" %}</a>
-        <a href="{% url 'cart' %}">{% trans "Cart" %}</a>
 
         <form action="{% url 'set_language' %}" method="post" class="lang-switcher">
           {% csrf_token %}

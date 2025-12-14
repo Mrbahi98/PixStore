@@ -244,7 +244,6 @@ gtag('config', 'G-0E1YGYRDG7');
       <nav>
         <a href="{% url 'home' %}">{% trans "Home" %}</a>
         <a href="{% url 'products' %}">{% trans "Products" %}</a>
-        <a href="{% url 'cart' %}">{% trans "Cart" %}</a>
       </nav>
     </div>
   </header>
@@ -297,7 +296,7 @@ gtag('config', 'G-0E1YGYRDG7');
          <form method="post" action="{% url 'add_to_cart' product.pk %}?next={% url 'cart' %}" style="margin-top:6px;">
             {% csrf_token %}
             <input type="hidden" name="next" value="{% url 'cart' %}">
-            <button type="submit" class="btn-accent" style="width:100%;">{% trans "Add to Cart" %}</button>
+            <button type="submit" class="btn-accent" style="width:100%;">{% trans "Buy Now" %}</button>
           </form>
         </div>
       </article>

@@ -52,8 +52,6 @@
 </form>
         <a href="{% url 'home' %}" class="hover:text-yellow-300 transition">{% trans "Home" %}</a>
 <a href="{% url 'products' %}" class="hover:text-yellow-300 transition">{% trans "Products" %}</a>
-<a href="{% url 'cart' %}" class="hover:text-yellow-300 transition relative">
-  {% trans "Cart" %}</a>
           <span id="cart-count" class="absolute -top-2 -right-4 bg-yellow-300 text-black text-xs font-semibold px-1.5 py-0.5 rounded-full shadow-sm">
             {% if request.user.is_authenticated %}
               {{ cart_count }}

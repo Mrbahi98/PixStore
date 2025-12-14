@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-01 16:01+0100\n"
+"POT-Creation-Date: 2025-12-14 20:34+0100\n"
 "PO-Revision-Date: 2025-10-24 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
@@ -19,75 +19,79 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: .\store\templates\store\base.html:28 .\store\templates\store\cart.html:59
+#: .\store\templates\store\about.html:9
+msgid "About PixStore | About PixStore"
+msgstr ""
+
+#: .\store\templates\store\base.html:53 .\store\templates\store\cart.html:67
 #: .\store\templates\store\checkout_success.html:125
-#: .\store\templates\store\home.html:230
-#: .\store\templates\store\products.html:125
+#: .\store\templates\store\home.html:269
+#: .\store\templates\store\products.html:245
 msgid "Home"
 msgstr "الرئيسية"
 
-#: .\store\templates\store\base.html:29 .\store\templates\store\cart.html:60
+#: .\store\templates\store\base.html:54 .\store\templates\store\cart.html:68
 #: .\store\templates\store\checkout_success.html:126
-#: .\store\templates\store\home.html:231
-#: .\store\templates\store\products.html:126
+#: .\store\templates\store\home.html:270
+#: .\store\templates\store\products.html:246
 msgid "Products"
 msgstr "المنتجات"
 
-#: .\store\templates\store\base.html:31 .\store\templates\store\cart.html:61
+#: .\store\templates\store\base.html:56 .\store\templates\store\cart.html:69
 #: .\store\templates\store\checkout_success.html:127
-#: .\store\templates\store\home.html:232
-#: .\store\templates\store\products.html:127
+#: .\store\templates\store\home.html:271
+#: .\store\templates\store\products.html:247
 msgid "Cart"
 msgstr "السلة"
 
-#: .\store\templates\store\base.html:67
+#: .\store\templates\store\base.html:141
 msgid "Product added to cart ✅"
 msgstr "✅ تمت الاضافة الى السلة"
 
-#: .\store\templates\store\base.html:71
+#: .\store\templates\store\base.html:145
 #, fuzzy
 #| msgid "Product added successfully!"
 msgid "Product added to cart successfully!"
 msgstr "تم اضافة المنتج بنجاح"
 
-#: .\store\templates\store\cart.html:9 .\store\templates\store\cart.html:67
+#: .\store\templates\store\cart.html:9 .\store\templates\store\cart.html:75
 #, fuzzy
 #| msgid "Cart"
 msgid "Your Cart"
 msgstr "السلة"
 
-#: .\store\templates\store\cart.html:96
+#: .\store\templates\store\cart.html:104
 msgid "Remove"
 msgstr "ازالة"
 
-#: .\store\templates\store\cart.html:100
+#: .\store\templates\store\cart.html:108
 msgid "Item total"
 msgstr ""
 
-#: .\store\templates\store\cart.html:107
+#: .\store\templates\store\cart.html:115
 msgid "Total"
 msgstr "المجموع"
 
-#: .\store\templates\store\cart.html:111
+#: .\store\templates\store\cart.html:119
 #, fuzzy
 #| msgid "Checkout Summary"
 msgid "Checkout"
 msgstr "الدفع"
 
-#: .\store\templates\store\cart.html:116
+#: .\store\templates\store\cart.html:124
 msgid "Your cart is empty."
 msgstr "سلتك فارغة"
 
-#: .\store\templates\store\cart.html:121
-#: .\store\templates\store\product_details.html:132
+#: .\store\templates\store\cart.html:129
+#: .\store\templates\store\product_details.html:156
 msgid "All Rights Reserved"
 msgstr ""
 
-#: .\store\templates\store\cart.html:138
+#: .\store\templates\store\cart.html:146
 msgid "Added to Cart"
 msgstr "تمت الاضافة الى السلة"
 
-#: .\store\templates\store\cart.html:139
+#: .\store\templates\store\cart.html:147
 msgid "Product added successfully!"
 msgstr "تم اضافة المنتج بنجاح"
 
@@ -118,8 +122,7 @@ msgid "View My Orders"
 msgstr "اظهار طلباتي"
 
 #: .\store\templates\store\checkout_success.html:150
-#: .\store\templates\store\home.html:272
-#: .\store\templates\store\products.html:171
+#: .\store\templates\store\products.html:310
 msgid "All Rights Reserved."
 msgstr ""
 
@@ -139,103 +142,120 @@ msgstr "البريد الالكتروني"
 msgid "Select Payment Method"
 msgstr "اختر طريقة دفع"
 
-#: .\store\templates\store\checkout_summary.html:34
-#: .\store\templates\store\proof_upload.html:18
-#: .\store\templates\store\proof_upload.html:19
+#: .\store\templates\store\checkout_summary.html:35
 msgid "Crypto"
 msgstr "كريبتو"
 
-#: .\store\templates\store\checkout_summary.html:42
-#: .\store\templates\store\proof_upload.html:23
-#: .\store\templates\store\proof_upload.html:24
+#: .\store\templates\store\checkout_summary.html:43
 msgid "Baridimob"
 msgstr "بريدي موب"
 
-#: .\store\templates\store\checkout_summary.html:50
+#: .\store\templates\store\checkout_summary.html:51
 msgid "Items"
 msgstr "الاغراض"
 
-#: .\store\templates\store\checkout_summary.html:60
+#: .\store\templates\store\checkout_summary.html:61
 msgid "Continue to Proof Upload"
 msgstr "المتابعة لاثبات الدفع"
+
+#: .\store\templates\store\checkout_summary.html:68
+msgid "Cancel Order"
+msgstr "إلغاء الطلب"
 
 #: .\store\templates\store\home.html:8
 msgid "PixStore | Digital Products"
 msgstr ""
 
-#: .\store\templates\store\home.html:246
+#: .\store\templates\store\home.html:285
 msgid "PixStore — Digital goods that ship instantly"
 msgstr ""
 
-#: .\store\templates\store\home.html:247
+#: .\store\templates\store\home.html:286
 msgid ""
 "Premium templates, bundles, and creative tools. Simple checkout, instant "
 "delivery, and full security."
 msgstr "منتجات مميزة، وحزم، وقوالب إبداعية. دفع سهل، وتسليم فوري، وأمان كامل"
 
-#: .\store\templates\store\home.html:248
+#: .\store\templates\store\home.html:287
 msgid "Explore Products"
 msgstr "استكشف المنتجات"
 
-#: .\store\templates\store\home.html:252
+#: .\store\templates\store\home.html:291
 msgid "Featured Products"
 msgstr "المنتجات المميزة "
 
-#: .\store\templates\store\home.html:262
-#: .\store\templates\store\products.html:157
+#: .\store\templates\store\home.html:317
+#: .\store\templates\store\products.html:295
 msgid "View Details"
 msgstr "التفاصيل"
 
-#: .\store\templates\store\home.html:266
-#: .\store\templates\store\products.html:166
+#: .\store\templates\store\home.html:321
+#: .\store\templates\store\products.html:305
 msgid "No products available yet."
 msgstr "لا منتجات متاحة حاليا"
 
-#: .\store\templates\store\product_details.html:111
+#: .\store\templates\store\product_details.html:119
 msgid "Back to Store"
 msgstr "العودة الى المتجر"
 
-#: .\store\templates\store\product_details.html:126
-#: .\store\templates\store\products.html:161
-msgid "Add to Cart"
-msgstr "اضافة الى السلة"
+#: .\store\templates\store\product_details.html:150
+#: .\store\templates\store\products.html:300
+msgid "Buy Now"
+msgstr "اشتري الأن"
 
 #: .\store\templates\store\products.html:8
-#: .\store\templates\store\products.html:133
+#: .\store\templates\store\products.html:253
 #, fuzzy
 #| msgid "Products"
 msgid "All Products"
 msgstr "المنتجات"
 
-#: .\store\templates\store\products.html:138
+#: .\store\templates\store\products.html:258
 msgid "All Categories"
 msgstr "جميع الفروع"
 
-#: .\store\templates\store\proof_upload.html:6
+#: .\store\templates\store\upload_payment_proof.html:6
 msgid "Upload Payment Proof"
 msgstr "رفع اثبات الدفع"
 
-#: .\store\templates\store\proof_upload.html:14
-#, fuzzy
-#| msgid "Select Payment Method"
-msgid "Selected Payment Method"
-msgstr "طريقة الدفع المختارة"
+#: .\store\templates\store\upload_payment_proof.html:14
+msgid "Available Accounts"
+msgstr ""
 
-#: .\store\templates\store\proof_upload.html:28
-msgid "No payment method selected"
-msgstr "لم يتم اخيار اي وسيلة دفع"
+#: .\store\templates\store\upload_payment_proof.html:22
+msgid "Account Number"
+msgstr ""
 
-#: .\store\templates\store\proof_upload.html:36
+#: .\store\templates\store\upload_payment_proof.html:26
+msgid "Wallet Address"
+msgstr ""
+
+#: .\store\templates\store\upload_payment_proof.html:30
+msgid "Owner"
+msgstr ""
+
+#: .\store\templates\store\upload_payment_proof.html:33
+msgid "Click to copy details"
+msgstr "اضغط لنسخ الحساب"
+
+#: .\store\templates\store\upload_payment_proof.html:36
+msgid "No available accounts at the moment."
+msgstr ""
+
+#: .\store\templates\store\upload_payment_proof.html:44
 msgid "Upload Screenshot"
 msgstr "رفع لقطة شاشة"
 
-#: .\store\templates\store\proof_upload.html:41
+#: .\store\templates\store\upload_payment_proof.html:48
 msgid "Submit Proof"
 msgstr "اضافة اثبات"
 
-#: .\store\views.py:12
-msgid "Your payment has been received successfully."
-msgstr "تم الدفع بنجاح"
+#: .\venv\Lib\site-packages\cloudinary\forms.py:55
+#: .\venv\Lib\site-packages\cloudinary\forms.py:124
+#, fuzzy
+#| msgid "No payment method selected"
+msgid "No file selected!"
+msgstr "لم يتم اخيار اي وسيلة دفع"
 
 #: .\venv\Lib\site-packages\django\contrib\messages\apps.py:16
 msgid "Messages"
@@ -1460,3 +1480,14 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "Add to Cart"
+#~ msgstr "اضافة الى السلة"
+
+#, fuzzy
+#~| msgid "Select Payment Method"
+#~ msgid "Selected Payment Method"
+#~ msgstr "طريقة الدفع المختارة"
+
+#~ msgid "Your payment has been received successfully."
+#~ msgstr "تم الدفع بنجاح"
