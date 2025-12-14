@@ -327,26 +327,26 @@
     
     <!-- Column 1: Quick Links -->
 <div>
-  <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">Quick Links</h3>
+  <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">{% trans "Quick Links" %}</h3>
   <ul class="space-y-2 text-sm font-semibold">
     <li>
       <a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
-        Home
+       {% trans "Home" %}
       </a>
     </li>
     <li>
       <a href="{% url 'products' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
-        Products
+        {% trans "Products" %}
       </a>
     </li>
     <li>
       <a href="{% url 'about' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
-        About
+        {% trans "About" %}
       </a>
     </li>
     <li>
       <a href="{% url 'contact' %}" class="text-gray-400 hover:text-white transition-colors duration-200 no-underline visited:text-gray-400">
-        Contact Us
+         {% trans "Contact Us" %}
       </a>
     </li>
   </ul>
@@ -354,16 +354,16 @@
 
     <!-- Column 2: About -->
     <div class="text-center md:text-left">
-      <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">About PixStore</h3>
+      <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">{% trans "About PixStore" %}</h3>
       <p class="text-sm leading-relaxed text-gray-400">
-        PixStore offers premium digital products — templates, tools, and design assets — all in one place 
-        to help you create faster, smarter, and more beautifully.
+        {% trans "PixStore offers premium digital products — templates, tools, and design assets — all in one place 
+        to help you create faster, smarter, and more beautifully" %}
       </p>
     </div>
 
     <!-- Column 3: Contact -->
     <div class="md:text-right">
-      <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">Contact Us</h3>
+      <h3 class="text-white text-lg font-semibold mb-4 tracking-wide">{% trans "Contact Us" %}</h3>
       <ul class="space-y-3 text-sm">
         <li class="flex items-center justify-center md:justify-end space-x-2">
           <i class="fa-brands fa-telegram text-sky-400 text-lg"></i>

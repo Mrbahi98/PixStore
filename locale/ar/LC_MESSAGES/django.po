@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-14 20:34+0100\n"
+"POT-Creation-Date: 2025-12-14 21:27+0100\n"
 "PO-Revision-Date: 2025-10-24 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
@@ -25,30 +25,23 @@ msgstr ""
 
 #: .\store\templates\store\base.html:53 .\store\templates\store\cart.html:67
 #: .\store\templates\store\checkout_success.html:125
-#: .\store\templates\store\home.html:269
+#: .\store\templates\store\home.html:269 .\store\templates\store\home.html:334
 #: .\store\templates\store\products.html:245
 msgid "Home"
 msgstr "الرئيسية"
 
 #: .\store\templates\store\base.html:54 .\store\templates\store\cart.html:68
 #: .\store\templates\store\checkout_success.html:126
-#: .\store\templates\store\home.html:270
+#: .\store\templates\store\home.html:270 .\store\templates\store\home.html:339
 #: .\store\templates\store\products.html:246
 msgid "Products"
 msgstr "المنتجات"
 
-#: .\store\templates\store\base.html:56 .\store\templates\store\cart.html:69
-#: .\store\templates\store\checkout_success.html:127
-#: .\store\templates\store\home.html:271
-#: .\store\templates\store\products.html:247
-msgid "Cart"
-msgstr "السلة"
-
-#: .\store\templates\store\base.html:141
+#: .\store\templates\store\base.html:139
 msgid "Product added to cart ✅"
 msgstr "✅ تمت الاضافة الى السلة"
 
-#: .\store\templates\store\base.html:145
+#: .\store\templates\store\base.html:143
 #, fuzzy
 #| msgid "Product added successfully!"
 msgid "Product added to cart successfully!"
@@ -58,6 +51,11 @@ msgstr "تم اضافة المنتج بنجاح"
 #, fuzzy
 #| msgid "Cart"
 msgid "Your Cart"
+msgstr "السلة"
+
+#: .\store\templates\store\cart.html:69
+#: .\store\templates\store\checkout_success.html:127
+msgid "Cart"
 msgstr "السلة"
 
 #: .\store\templates\store\cart.html:104
@@ -85,7 +83,7 @@ msgstr "سلتك فارغة"
 #: .\store\templates\store\cart.html:129
 #: .\store\templates\store\product_details.html:156
 msgid "All Rights Reserved"
-msgstr ""
+msgstr "كل الحقوق محفوظة"
 
 #: .\store\templates\store\cart.html:146
 msgid "Added to Cart"
@@ -122,15 +120,16 @@ msgid "View My Orders"
 msgstr "اظهار طلباتي"
 
 #: .\store\templates\store\checkout_success.html:150
-#: .\store\templates\store\products.html:310
+#: .\store\templates\store\products.html:309
 msgid "All Rights Reserved."
-msgstr ""
+msgstr "كل الحقوق محفوظة"
 
 #: .\store\templates\store\checkout_summary.html:8
 msgid "Checkout Summary"
 msgstr "ملخص الدفع"
 
 #: .\store\templates\store\checkout_summary.html:16
+#: .\store\templates\store\contact.html:19
 msgid "Full Name"
 msgstr "الاسم الكامل"
 
@@ -158,59 +157,107 @@ msgstr "الاغراض"
 msgid "Continue to Proof Upload"
 msgstr "المتابعة لاثبات الدفع"
 
-#: .\store\templates\store\checkout_summary.html:68
+#: .\store\templates\store\checkout_summary.html:69
 msgid "Cancel Order"
 msgstr "إلغاء الطلب"
+
+#: .\store\templates\store\contact.html:7
+#, fuzzy
+#| msgid "About PixStore"
+msgid "Contact PixStore"
+msgstr "تواصل معنا"
+
+#: .\store\templates\store\contact.html:8
+msgid "Have questions or feedback? We’d love to hear from you"
+msgstr "هل لديك أسئلة أو رأي؟ نحن في الاستماع"
+
+#: .\store\templates\store\contact.html:24
+#, fuzzy
+#| msgid "Email"
+msgid "Your Email"
+msgstr "البريد الالكتروني"
+
+#: .\store\templates\store\contact.html:29
+#, fuzzy
+#| msgid "Messages"
+msgid "Message"
+msgstr "الرسائل"
+
+#: .\store\templates\store\contact.html:33
+#, fuzzy
+#| msgid "Messages"
+msgid "Send Message"
+msgstr "ارسل الرسالة"
+
+#: .\store\templates\store\contact.html:37
+msgid "Other Ways to Reach Us"
+msgstr "طرق اخرى للتواصل معنا"
 
 #: .\store\templates\store\home.html:8
 msgid "PixStore | Digital Products"
 msgstr ""
 
-#: .\store\templates\store\home.html:285
+#: .\store\templates\store\home.html:284
 msgid "PixStore — Digital goods that ship instantly"
 msgstr ""
 
-#: .\store\templates\store\home.html:286
+#: .\store\templates\store\home.html:285
 msgid ""
 "Premium templates, bundles, and creative tools. Simple checkout, instant "
 "delivery, and full security."
 msgstr "منتجات مميزة، وحزم، وقوالب إبداعية. دفع سهل، وتسليم فوري، وأمان كامل"
 
-#: .\store\templates\store\home.html:287
+#: .\store\templates\store\home.html:286
 msgid "Explore Products"
 msgstr "استكشف المنتجات"
 
-#: .\store\templates\store\home.html:291
+#: .\store\templates\store\home.html:290
 msgid "Featured Products"
 msgstr "المنتجات المميزة "
 
-#: .\store\templates\store\home.html:317
-#: .\store\templates\store\products.html:295
+#: .\store\templates\store\home.html:316
+#: .\store\templates\store\products.html:294
 msgid "View Details"
 msgstr "التفاصيل"
 
-#: .\store\templates\store\home.html:321
-#: .\store\templates\store\products.html:305
+#: .\store\templates\store\home.html:320
+#: .\store\templates\store\products.html:304
 msgid "No products available yet."
 msgstr "لا منتجات متاحة حاليا"
+
+#: .\store\templates\store\home.html:330
+msgid "Quick Links"
+msgstr "روابط سريعة"
+
+#: .\store\templates\store\home.html:344
+msgid "About"
+msgstr "حول"
+
+#: .\store\templates\store\home.html:349 .\store\templates\store\home.html:366
+msgid "Contact Us"
+msgstr "تواصل معنا"
+
+#: .\store\templates\store\home.html:357
+msgid "About PixStore"
+msgstr "حول بيكس ستور"
 
 #: .\store\templates\store\product_details.html:119
 msgid "Back to Store"
 msgstr "العودة الى المتجر"
 
 #: .\store\templates\store\product_details.html:150
-#: .\store\templates\store\products.html:300
+#: .\store\templates\store\products.html:299
 msgid "Buy Now"
 msgstr "اشتري الأن"
 
 #: .\store\templates\store\products.html:8
-#: .\store\templates\store\products.html:253
+#: .\store\templates\store\products.html:252
 #, fuzzy
 #| msgid "Products"
 msgid "All Products"
 msgstr "المنتجات"
 
-#: .\store\templates\store\products.html:258
+#: .\store\templates\store\products.html:257
 msgid "All Categories"
 msgstr "جميع الفروع"
 
@@ -220,19 +267,19 @@ msgstr "رفع اثبات الدفع"
 
 #: .\store\templates\store\upload_payment_proof.html:14
 msgid "Available Accounts"
-msgstr ""
+msgstr "الحسابات المتاحة"
 
 #: .\store\templates\store\upload_payment_proof.html:22
 msgid "Account Number"
-msgstr ""
+msgstr "رقم الحساب"
 
 #: .\store\templates\store\upload_payment_proof.html:26
 msgid "Wallet Address"
-msgstr ""
+msgstr "عنوان المحغظة"
 
 #: .\store\templates\store\upload_payment_proof.html:30
 msgid "Owner"
-msgstr ""
+msgstr "المالك"
 
 #: .\store\templates\store\upload_payment_proof.html:33
 msgid "Click to copy details"
