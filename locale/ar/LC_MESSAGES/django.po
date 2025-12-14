@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-14 21:27+0100\n"
+"POT-Creation-Date: 2025-12-14 21:45+0100\n"
 "PO-Revision-Date: 2025-10-24 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: .\store\templates\store\about.html:9
 msgid "About PixStore | About PixStore"
-msgstr ""
+msgstr "حول بيكس ستور"
 
 #: .\store\templates\store\base.html:53 .\store\templates\store\cart.html:67
 #: .\store\templates\store\checkout_success.html:125
@@ -129,7 +129,7 @@ msgid "Checkout Summary"
 msgstr "ملخص الدفع"
 
 #: .\store\templates\store\checkout_summary.html:16
-#: .\store\templates\store\contact.html:19
+#: .\store\templates\store\contact.html:20
 msgid "Full Name"
 msgstr "الاسم الكامل"
 
@@ -161,35 +161,35 @@ msgstr "المتابعة لاثبات الدفع"
 msgid "Cancel Order"
 msgstr "إلغاء الطلب"
 
-#: .\store\templates\store\contact.html:7
+#: .\store\templates\store\contact.html:8
 #, fuzzy
 #| msgid "About PixStore"
 msgid "Contact PixStore"
 msgstr "تواصل معنا"
 
-#: .\store\templates\store\contact.html:8
+#: .\store\templates\store\contact.html:9
 msgid "Have questions or feedback? We’d love to hear from you"
 msgstr "هل لديك أسئلة أو رأي؟ نحن في الاستماع"
 
-#: .\store\templates\store\contact.html:24
+#: .\store\templates\store\contact.html:25
 #, fuzzy
 #| msgid "Email"
 msgid "Your Email"
 msgstr "البريد الالكتروني"
 
-#: .\store\templates\store\contact.html:29
+#: .\store\templates\store\contact.html:30
 #, fuzzy
 #| msgid "Messages"
 msgid "Message"
 msgstr "الرسائل"
 
-#: .\store\templates\store\contact.html:33
+#: .\store\templates\store\contact.html:34
 #, fuzzy
 #| msgid "Messages"
 msgid "Send Message"
 msgstr "ارسل الرسالة"
 
-#: .\store\templates\store\contact.html:37
+#: .\store\templates\store\contact.html:38
 msgid "Other Ways to Reach Us"
 msgstr "طرق اخرى للتواصل معنا"
 
@@ -233,13 +233,23 @@ msgstr "روابط سريعة"
 msgid "About"
 msgstr "حول"
 
-#: .\store\templates\store\home.html:349 .\store\templates\store\home.html:366
+#: .\store\templates\store\home.html:349 .\store\templates\store\home.html:368
 msgid "Contact Us"
 msgstr "تواصل معنا"
 
 #: .\store\templates\store\home.html:357
 msgid "About PixStore"
 msgstr "حول بيكس ستور"
+
+#: .\store\templates\store\home.html:359
+msgid ""
+"\n"
+"    PixStore offers premium digital products — templates, tools, and design "
+"assets —\n"
+"    all in one place to help you create faster, smarter, and more "
+"beautifully\n"
+"    "
+msgstr "يقدم متجر بيكس ستور منتجات رقمية مميزة - قوالب وأدوات وأصول تصميم - جميعها في مكان واحد لمساعدتك على الإبداع بشكل أسرع وأذكى وأكثر جمالاً"
 
 #: .\store\templates\store\product_details.html:119
 msgid "Back to Store"
