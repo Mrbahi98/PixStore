@@ -1,11 +1,185 @@
 {% extends 'store/base.html' %}
 {% load static %}
 {% load i18n %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <h1><title>{% trans "About PixStore | About PixStore" %}</title>
-<h1>About PixStore</h1>
-<p>This is the about page.</p>
+
+{% block content %}
+<main class="checkout-dark">
+  <div class="checkout-card">
+
+    <h1 class="page-title">{% trans "About & FAQ" %}</h1>
+
+    <!-- Accordion -->
+    <div class="accordion">
+
+      <!-- ABOUT -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          {% trans "About PixStore" %}
+          <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            {% blocktrans %}
+            PixStore is a digital marketplace providing premium templates,
+            tools, and creative assets for developers and designers.
+            {% endblocktrans %}
+          </p>
+          <p>
+            {% blocktrans %}
+            Our mission is to help creators work faster, smarter, and
+            with confidence using carefully curated digital products.
+            {% endblocktrans %}
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 1 -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          {% trans "What does PixStore sell?" %}
+          <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            {% blocktrans %}
+            PixStore sells digital products such as templates, UI kits,
+            tools, and design assets ready for instant use.
+            {% endblocktrans %}
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          {% trans "How do I receive my purchase?" %}
+          <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            {% blocktrans %}
+            After completing payment, you will receive instructions
+            to access your purchased digital product.
+            {% endblocktrans %}
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="accordion-item">
+        <button class="accordion-header">
+          {% trans "Can I get a refund?" %}
+          <span class="icon">+</span>
+        </button>
+        <div class="accordion-content">
+          <p>
+            {% blocktrans %}
+            Due to the nature of digital products, refunds are handled
+            on a case-by-case basis. Please contact support if needed.
+            {% endblocktrans %}
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<script>
+document.querySelectorAll('.accordion-header').forEach(button => {
+  button.addEventListener('click', () => {
+    const item = button.parentElement;
+    const content = item.querySelector('.accordion-content');
+    const icon = button.querySelector('.icon');
+
+    const isOpen = item.classList.contains('open');
+
+    document.querySelectorAll('.accordion-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.accordion-content').style.maxHeight = null;
+      i.querySelector('.icon').textContent = '+';
+    });
+
+    if (!isOpen) {
+      item.classList.add('open');
+      content.style.maxHeight = content.scrollHeight + 'px';
+      icon.textContent = '−';
+    }
+  });
+});
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.body.classList.add("checkout-dark-mode");
+  });
+</script>
+<style>
+/* Reuse checkout dark mode */
+/* Card */
+.checkout-dark-mode {
+  background: #0d2438 !important;
+  color: #ffffff !important;
+}
+/* Card */
+.checkout-card {
+  max-width: 720px;
+  margin: 60px auto;
+  padding: 36px 30px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+/* Title */
+.page-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 30px;
+  background: linear-gradient(90deg,#ff375f,#00c8ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Accordion */
+.accordion-item {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.accordion-header {
+  width: 100%;
+  padding: 16px;
+  background: none;
+  border: none;
+  color: #e5e7eb; /* LIGHT text */
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+
+.accordion-header:hover {
+  color: #00c8ff;
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+
+.accordion-content p {
+  padding: 10px 16px 18px;
+  color: #d4d4d4;
+  line-height: 1.7;
+}
+
+.icon {
+  font-size: 1.4rem;
+  color: #00c8ff;
+}
+
+</style>
+{% endblock %}

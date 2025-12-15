@@ -69,12 +69,14 @@
     {% block content %}{% endblock %}
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-300 py-10">
-  <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Footer -->
+<footer class="bg-gray-900 text-gray-300">
+  
+  <!-- Top section -->
+  <div class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
 
-    <!-- Left column -->
-  <div>
+    <!-- Left: Quick Links -->
+    <div>
       <h3 class="text-white text-lg font-semibold mb-3">Quick Links</h3>
       <ul class="space-y-2 text-sm">
         <li><a href="{% url 'home' %}" class="hover:text-white">Home</a></li>
@@ -83,20 +85,14 @@
         <li><a href="{% url 'contact' %}" class="hover:text-white">Contact Us</a></li>
       </ul>
     </div>
-    <!-- Middle column -->
-<div class="flex justify-center text-center">
-  <div>
-    <h3 class="text-white text-lg font-semibold mb-3">About PixStore</h3>
-    <p class="text-sm leading-relaxed">
-      PixStore offers premium digital products — templates, tools, and design assets — all in one place to help you create faster and smarter.
-    </p>
-  </div>
-</div>
 
-        <!-- Right column -->
-    <div class="ml-auto text-right w-fit">
-  <h3 class="text-white text-lg font-semibold mb-3">Contact Us</h3>
-  <ul class="space-y-2 text-sm">
+    <!-- Middle: empty column (keeps balance) -->
+    <div></div>
+
+    <!-- Right: Contact Us -->
+    <div class="text-right">
+      <h3 class="text-white text-lg font-semibold mb-3">Contact Us</h3>
+      <ul class="space-y-2 text-sm">
         <li>
           <i class="fa-brands fa-telegram mr-2 text-blue-400"></i>
           <a href="https://t.me/CallMe_Bahi" target="_blank" class="hover:text-white">
@@ -111,17 +107,22 @@
         </li>
         <li>
           <i class="fa-solid fa-envelope mr-2 text-red-400"></i>
-          <a href="mailto:youremail@example.com" class="hover:text-white">
+          <a href="mailto:yuvus03@outlook.com" class="hover:text-white">
             Yuvus03_@outlook.com
           </a>
         </li>
       </ul>
-   </div>
+    </div>
 
-  <!-- Bottom Line -->
-  <div class="mt-10 border-t border-white/10 pt-5 text-center text-sm text-gray-500">
+  </div>
+
+  <!-- Bottom centered copyright -->
+<div class="border-t border-white/10 max-w-5xl mx-auto py-1 text-center text-sm text-gray-500" style="
+    width: 250px;
+>
     © {{ now|date:"Y" }} <span class="text-cyan-400 font-semibold">PixStore</span> — All rights reserved.
   </div>
+</div>
 </footer>
 <div id="toast-container" style="
   position: fixed;

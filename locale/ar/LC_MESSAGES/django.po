@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-14 21:45+0100\n"
+"POT-Creation-Date: 2025-12-15 10:55+0100\n"
 "PO-Revision-Date: 2025-10-24 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
@@ -20,8 +20,66 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: .\store\templates\store\about.html:9
-msgid "About PixStore | About PixStore"
+#, fuzzy
+#| msgid "About"
+msgid "About & FAQ"
+msgstr "الاسئلة الشائعة"
+
+#: .\store\templates\store\about.html:17 .\store\templates\store\home.html:357
+msgid "About PixStore"
 msgstr "حول بيكس ستور"
+
+#: .\store\templates\store\about.html:22
+msgid ""
+"\n"
+"            PixStore is a digital marketplace providing premium templates,\n"
+"            tools, and creative assets for developers and designers.\n"
+"            "
+msgstr "بيكس ستور هو موقع يقدم عديد المنتجات الرقمية خاصة الحزم الشاملة التي تساعد ويحتاجها اي شخص لبدأ مشروعه الخاص"
+
+#: .\store\templates\store\about.html:28
+msgid ""
+"\n"
+"            Our mission is to help creators work faster, smarter, and\n"
+"            with confidence using carefully curated digital products.\n"
+"            "
+msgstr "مهمتنا الرئيسية و الدائمة هي مساعدة صناع المحتوى الجدد و المبتدئين لبدأ رحلتهم في عالم المنتجات الرقمية بشكل اسرع و اسهل من خلال تقديم كل الادوات التي يحتاجونها "
+
+#: .\store\templates\store\about.html:39
+msgid "What does PixStore sell?"
+msgstr "ماذا يبيع بيكس ستور؟"
+
+#: .\store\templates\store\about.html:44
+msgid ""
+"\n"
+"            PixStore sells digital products such as templates, UI kits,\n"
+"            tools, and design assets ready for instant use.\n"
+"            "
+msgstr "يبيع بيكس ستور منتجات رقمية عبارة حزم شاملة لعديد المنتجات و الادوات الرقمية التي يحتاجها اي صانع محتوى جديد او مبتدئ "
+
+#: .\store\templates\store\about.html:55
+msgid "How do I receive my purchase?"
+msgstr "كيف يمكنني استلام مشترياتي؟"
+
+#: .\store\templates\store\about.html:60
+msgid ""
+"\n"
+"            After completing payment, you will receive instructions\n"
+"            to access your purchased digital product.\n"
+"            "
+msgstr "بعد اكمال عملية الدفع و ارسال الاثبات سوف تصلك رسالة في البريد الالكتروني توضح تفاصيل وحالة الطلب الخاص بك و يمكنك تتبع حالته مباشرة و في أي وقت و بعد التأكد من الدفع عن طريق فريقنا سوف تستلم منتجك مباشرة في بريك الالكتروني نفسه"
+
+#: .\store\templates\store\about.html:71
+msgid "Can I get a refund?"
+msgstr "هل يمكنني استرداد اموالي؟"
+
+#: .\store\templates\store\about.html:76
+msgid ""
+"\n"
+"            Due to the nature of digital products, refunds are handled\n"
+"            on a case-by-case basis. Please contact support if needed.\n"
+"            "
+msgstr "على حسب طبيعة المنتج الرقمي فيتم دراسة عمليات الاسترداد بشكل دقيق بين اعضاء الفريق و على الزبون ان يوضح سبب الاسترداد بدقة عن طريق ارسال رسالة للدعم التقني للموقع"
 
 #: .\store\templates\store\base.html:53 .\store\templates\store\cart.html:67
 #: .\store\templates\store\checkout_success.html:125
@@ -37,11 +95,11 @@ msgstr "الرئيسية"
 msgid "Products"
 msgstr "المنتجات"
 
-#: .\store\templates\store\base.html:139
+#: .\store\templates\store\base.html:140
 msgid "Product added to cart ✅"
 msgstr "✅ تمت الاضافة الى السلة"
 
-#: .\store\templates\store\base.html:143
+#: .\store\templates\store\base.html:144
 #, fuzzy
 #| msgid "Product added successfully!"
 msgid "Product added to cart successfully!"
@@ -237,10 +295,6 @@ msgstr "حول"
 msgid "Contact Us"
 msgstr "تواصل معنا"
 
-#: .\store\templates\store\home.html:357
-msgid "About PixStore"
-msgstr "حول بيكس ستور"
-
 #: .\store\templates\store\home.html:359
 msgid ""
 "\n"
@@ -249,7 +303,9 @@ msgid ""
 "    all in one place to help you create faster, smarter, and more "
 "beautifully\n"
 "    "
-msgstr "يقدم متجر بيكس ستور منتجات رقمية مميزة - قوالب وأدوات وأصول تصميم - جميعها في مكان واحد لمساعدتك على الإبداع بشكل أسرع وأذكى وأكثر جمالاً"
+msgstr ""
+"يقدم متجر بيكس ستور منتجات رقمية مميزة - قوالب وأدوات وأصول تصميم - جميعها "
+"في مكان واحد لمساعدتك على الإبداع بشكل أسرع وأذكى وأكثر جمالاً"
 
 #: .\store\templates\store\product_details.html:119
 msgid "Back to Store"
@@ -1537,6 +1593,9 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "About PixStore | About PixStore"
+#~ msgstr "حول بيكس ستور"
 
 #~ msgid "Add to Cart"
 #~ msgstr "اضافة الى السلة"
