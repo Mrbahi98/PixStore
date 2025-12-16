@@ -243,21 +243,35 @@ def checkout_summary(request):
                 price=item['product'].price
             )
 
-        # Save order ID
-        request.session['last_order_id'] = order.id
+      # Save order ID for the next step
+request.session['last_order_id'] = order.id
 
-        # ✅ FREE ORDER
-        if float(total_price) <= 0:
-            order.paid = True
-            order.save()
+# ✅ FREE ORDER → auto-confirm + send email
+if float(total_price) <= 0:
+    order.paid = True
+    order.save()
 
-            request.session['cart'] = {}
-            request.session.modified = True
+    # 🔔 SEND CUSTOMER CONFIRMATION (same as paid flow)
+    try:
+        threading.Thread(
+            target=_send_order_confirmation,
+            args=(order.id,),
+            daemon=True
+        ).start()
+    except Exception:
+        logger.exception(
+            "Failed to send confirmation email for FREE order %s",
+            order.id
+        )
 
-            return redirect('checkout_success')
+    request.session['cart'] = {}
+    request.session.modified = True
 
-        # ❌ PAID ORDER → upload proof
-        return redirect(f"{reverse('upload_payment_proof')}?payment_method={payment_method}")
+    return redirect('checkout_success')
+
+# ❌ PAID ORDER → upload proof
+return redirect(f"{reverse('upload_payment_proof')}?payment_method={payment_method}")
+
 
     # ✅ THIS MUST BE AT ROOT LEVEL (NO EXTRA INDENT)
     return render(request, 'store/checkout_summary.html', {
@@ -265,7 +279,6 @@ def checkout_summary(request):
         'total_price': total_price,
         'cart_count': get_cart_count(request),
     })
-
 
 def checkout_success(request):
     return render(request, 'store/checkout_success.html', {
