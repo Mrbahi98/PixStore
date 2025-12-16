@@ -243,37 +243,35 @@ def checkout_summary(request):
                 price=item['product'].price
             )
 
-      # Save order ID for the next step
-request.session['last_order_id'] = order.id
+        request.session['last_order_id'] = order.id
 
-# ✅ FREE ORDER → auto-confirm + send email
-if float(total_price) <= 0:
-    order.paid = True
-    order.save()
+        # ✅ FREE ORDER
+        if float(total_price) <= 0:
+            order.paid = True
+            order.save()
 
-    # 🔔 SEND CUSTOMER CONFIRMATION (same as paid flow)
-    try:
-        threading.Thread(
-            target=_send_order_confirmation,
-            args=(order.id,),
-            daemon=True
-        ).start()
-    except Exception:
-        logger.exception(
-            "Failed to send confirmation email for FREE order %s",
-            order.id
+            try:
+                threading.Thread(
+                    target=_send_order_confirmation,
+                    args=(order.id,),
+                    daemon=True
+                ).start()
+            except Exception:
+                logger.exception(
+                    "Failed to send confirmation email for FREE order %s",
+                    order.id
+                )
+
+            request.session['cart'] = {}
+            request.session.modified = True
+            return redirect('checkout_success')
+
+        # ❌ PAID ORDER
+        return redirect(
+            f"{reverse('upload_payment_proof')}?payment_method={payment_method}"
         )
 
-    request.session['cart'] = {}
-    request.session.modified = True
-
-    return redirect('checkout_success')
-
-# ❌ PAID ORDER → upload proof
-return redirect(f"{reverse('upload_payment_proof')}?payment_method={payment_method}")
-
-
-    # ✅ THIS MUST BE AT ROOT LEVEL (NO EXTRA INDENT)
+    # ⬇⬇⬇ THIS MUST BE FLUSH LEFT (NO EXTRA SPACES)
     return render(request, 'store/checkout_summary.html', {
         'cart_items': cart_items,
         'total_price': total_price,
