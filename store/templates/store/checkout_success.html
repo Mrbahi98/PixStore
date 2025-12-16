@@ -124,7 +124,6 @@
       <nav>
         <a href="{% url 'home' %}">{% trans "Home" %}</a>
         <a href="{% url 'products' %}">{% trans "Products" %}</a>
-        <a href="{% url 'cart' %}">{% trans "Cart" %}</a>
       </nav>
     </div>
   </header>
@@ -141,7 +140,7 @@
 
       <div class="btn-group">
         <a href="{% url 'products' %}" class="btn btn-primary">{% trans "Continue Shopping" %}</a>
-        <a href="{% url 'my_orders' %}" class="btn btn-secondary">{% trans "View My Orders" %}</a>
+        <a href="{% url 'my_orders' %}" class="btn-accent">{% trans "View My Orders" %}</a>
       </div>
     </div>
   </main>
