@@ -195,7 +195,9 @@ def _send_order_confirmation(order_id):
         msg.send()
 
     except Exception:
-        logging.exception("Order confirmation send failed for order %s", order_id)
+          logging.exception("Order confirmation send failed for order %s", order_id)
+
+logger = logging.getLogger(__name__)
 
 def checkout_summary(request):
     cart = request.session.get('cart', {})
@@ -227,6 +229,7 @@ def checkout_summary(request):
         email = request.POST.get('email', '').strip()
         payment_method = request.POST.get('payment_method', '').strip()
 
+        # ✅ Create order
         order = Order.objects.create(
             user=request.user if request.user.is_authenticated else None,
             name=name,
@@ -243,13 +246,33 @@ def checkout_summary(request):
                 price=item['product'].price
             )
 
+        # ✅ Save order ID
         request.session['last_order_id'] = order.id
 
+        # ✅ ADMIN EMAIL — order created
+        try:
+            send_mail(
+                subject=f"New Order Created - #{order.id}",
+                message=(
+                    f"New order received.\n\n"
+                    f"Order ID: {order.id}\n"
+                    f"Name: {order.name}\n"
+                    f"Email: {order.email}\n"
+                    f"Total: {order.total_price} DA"
+                ),
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[settings.DEFAULT_FROM_EMAIL],
+                fail_silently=False,
+            )
+        except Exception:
+            logger.exception("Failed to send admin order email for order %s", order.id)
+
         # ✅ FREE ORDER
-        if float(total_price) <= 0:
+        if total_price <= Decimal("0.00"):
             order.paid = True
             order.save()
 
+            # ✅ CUSTOMER EMAIL (same as paid flow)
             try:
                 threading.Thread(
                     target=_send_order_confirmation,
@@ -266,12 +289,12 @@ def checkout_summary(request):
             request.session.modified = True
             return redirect('checkout_success')
 
-        # ❌ PAID ORDER
+        # ❌ PAID ORDER → proof upload
         return redirect(
             f"{reverse('upload_payment_proof')}?payment_method={payment_method}"
         )
 
-    # ⬇⬇⬇ THIS MUST BE FLUSH LEFT (NO EXTRA SPACES)
+    # ✅ NORMAL PAGE LOAD
     return render(request, 'store/checkout_summary.html', {
         'cart_items': cart_items,
         'total_price': total_price,
