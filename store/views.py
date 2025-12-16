@@ -197,14 +197,12 @@ def _send_order_confirmation(order_id):
     except Exception:
         logging.exception("Order confirmation send failed for order %s", order_id)
 
-
 def checkout_summary(request):
     cart = request.session.get('cart', {})
     if not cart:
         messages.info(request, "Your cart is empty.")
         return redirect('products')
 
-    # convert keys to ints to avoid DB mismatch
     try:
         cart_product_ids = [int(k) for k in cart.keys()]
     except Exception:
@@ -229,7 +227,6 @@ def checkout_summary(request):
         email = request.POST.get('email', '').strip()
         payment_method = request.POST.get('payment_method', '').strip()
 
-        # Create order
         order = Order.objects.create(
             user=request.user if request.user.is_authenticated else None,
             name=name,
@@ -246,16 +243,27 @@ def checkout_summary(request):
                 price=item['product'].price
             )
 
-        # Save order ID for the next step
+        # Save order ID
         request.session['last_order_id'] = order.id
-        # Do NOT clear cart here. Wait for proof upload.
 
+        # ✅ FREE ORDER
+        if float(total_price) <= 0:
+            order.paid = True
+            order.save()
+
+            request.session['cart'] = {}
+            request.session.modified = True
+
+            return redirect('checkout_success')
+
+        # ❌ PAID ORDER → upload proof
         return redirect(f"{reverse('upload_payment_proof')}?payment_method={payment_method}")
 
+    # ✅ THIS MUST BE AT ROOT LEVEL (NO EXTRA INDENT)
     return render(request, 'store/checkout_summary.html', {
         'cart_items': cart_items,
         'total_price': total_price,
-        'cart_count': get_cart_count(request)
+        'cart_count': get_cart_count(request),
     })
 
 
@@ -276,36 +284,6 @@ logger = logging.getLogger(__name__)
 def upload_payment_proof(request):
     payment_method = request.GET.get('payment_method', '')
 
-    # 🔐 Resolve order ONCE
-    order = None
-    order_id = request.session.get('last_order_id')
-
-    if order_id:
-        order = Order.objects.filter(id=order_id).first()
-
-    if not order and request.user.is_authenticated:
-        order = Order.objects.filter(user=request.user).order_by('-created_at').first()
-
-    # ✅ FREE ORDER: skip upload page
-    logger.warning(
-    "UPLOAD PROOF CHECK — Order ID: %s | total_price: %s | type: %s",
-    order.id if order else None,
-    order.total_price if order else None,
-    type(order.total_price).__name__ if order else None,
-)
-    if order and float(order.total_price) <= 0:
-        order.paid = True
-        order.save()
-
-        request.session['cart'] = {}
-        if 'last_order_id' in request.session:
-            del request.session['last_order_id']
-        request.session.modified = True
-
-        return redirect('checkout_success')
-
-    # ---- Paid order flow continues ----
-
     accounts = []
     if payment_method == "baridimob":
         accounts = [
@@ -319,68 +297,108 @@ def upload_payment_proof(request):
             {"name": "USDT BSC (BEP20)", "address": "0x97a8bf22824ab18eb92a391275ff51b98c1bd2ca"},
         ]
 
+    # Local uploaded logo path for testing (will be transformed to public URL by your platform)
+    # For production replace with your static absolute URL:
+    # "https://pixstore-production.up.railway.app/static/images/pixstore-logo-v2.png"
     logo_url = "/mnt/data/Screenshot 2025-11-23 213945.png"
 
     if request.method == 'POST' and request.FILES.get('proof'):
         proof = request.FILES['proof']
 
-        if not order:
-            messages.error(request, "❌ Could not find your order. Please try again.")
-            return redirect('cart')
+        # Get the order from session
+        order = None
+        order_id = request.session.get('last_order_id')
+        if order_id:
+            order = Order.objects.filter(id=order_id).first()
 
-        PaymentProof.objects.create(
-            user=request.user if request.user.is_authenticated else None,
-            name=order.name,
-            email=order.email,
-            payment_method=payment_method,
-            screenshot=proof
-        )
+        # Fallback for authenticated users (in case session was lost)
+        if not order and request.user.is_authenticated:
+            order = Order.objects.filter(user=request.user).order_by('-created_at').first()
 
-        # --- Admin notification ---
-        raw_admins = getattr(settings, "ADMIN_NOTIFICATION_EMAILS", None)
-        if isinstance(raw_admins, str):
-            recipient_list = [e.strip() for e in raw_admins.split(",") if e.strip()]
-        elif isinstance(raw_admins, (list, tuple)):
-            recipient_list = [e.strip() for e in raw_admins if e and e.strip()]
-        else:
-            recipient_list = [settings.DEFAULT_FROM_EMAIL]
-
-        if not recipient_list:
-            recipient_list = [settings.DEFAULT_FROM_EMAIL]
-
-        recipient_list = list(dict.fromkeys(recipient_list))  # dedupe
-
-        try:
-            send_mail(
-                subject=f"New Payment Proof Uploaded - Order #{order.id}",
-                message=(
-                    f"Order ID: {order.id}\n"
-                    f"Name: {order.name or 'Guest'}\n"
-                    f"Email: {order.email or 'Unknown'}\n"
-                    f"Payment Method: {payment_method}\n"
-                    f"Total Price: {order.total_price}"
-                ),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=recipient_list,
-                fail_silently=False,
+        if order:
+            # Save the proof
+            PaymentProof.objects.create(
+                user=request.user if request.user.is_authenticated else None,
+                name=order.name,
+                email=order.email,
+                payment_method=payment_method,
+                screenshot=proof
             )
-        except Exception:
-            messages.error(request, "❌ Failed to notify admin. Please try again.")
+
+            # --- Prepare admin recipients robustly ---
+            raw_admins = getattr(settings, "ADMIN_NOTIFICATION_EMAILS", None)
+            if isinstance(raw_admins, str):
+                recipient_list = [e.strip() for e in raw_admins.split(",") if e.strip()]
+            elif isinstance(raw_admins, (list, tuple)):
+                recipient_list = [e.strip() for e in raw_admins if e and e.strip()]
+            else:
+                recipient_list = [settings.DEFAULT_FROM_EMAIL]
+
+            # Ensure at least one recipient and dedupe
+            if not recipient_list:
+                recipient_list = [settings.DEFAULT_FROM_EMAIL]
+            seen = set()
+            clean_recipients = []
+            for r in recipient_list:
+                low = r.lower()
+                if low not in seen:
+                    clean_recipients.append(r)
+                    seen.add(low)
+            recipient_list = clean_recipients
+
+            # --- Send admin notification, log everything ---
+            try:
+                logger.info("Sending admin payment proof notification for order %s to %s", order.id, recipient_list)
+                send_mail(
+                    subject=f"New Payment Proof Uploaded - Order #{order.id}",
+                    message=(
+                        f"A new payment proof has been uploaded.\n\n"
+                        f"Order ID: {order.id}\n"
+                        f"Name: {order.name or 'Guest'}\n"
+                        f"Email: {order.email or 'Unknown'}\n"
+                        f"Payment Method: {payment_method}\n"
+                        f"Total Price: {order.total_price}\n"
+                        f"---\n"
+                        f"Please review it in the Django admin panel."
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=recipient_list,
+                    fail_silently=False,
+                )
+                logger.info("Admin notification sent for order %s", order.id)
+
+                # --- Only after admin notify succeeded, start customer confirmation ---
+                try:
+                    threading.Thread(target=_send_order_confirmation, args=(order.id,), daemon=True).start()
+                    logger.info("Started customer confirmation thread for order %s", order.id)
+                except Exception:
+                    logger.exception("Failed to start customer confirmation thread for order %s", order.id)
+
+            except Exception as e:
+                # Log the real error so you can inspect Railway logs & Brevo failure
+                logger.exception("Admin notification failed for order %s: %s", order.id, e)
+                # Optionally inform admin via UI; we continue to clear session or not depending on policy
+                messages.error(request, "❌ Failed to send admin notification — please check logs.")
+                # You may want to *not* clear session/cart in this case so you can retry
+                return redirect('cart')
+
+            # Clear cart and session data only after successful upload & admin notification
+            request.session['cart'] = {}
+            if 'last_order_id' in request.session:
+                del request.session['last_order_id']
+            request.session.modified = True
+
+            messages.success(request, "✅ Payment proof uploaded successfully.")
+            return redirect('checkout_success')
+        else:
+            messages.error(request, "❌ Could not find your order. Please try placing it again.")
             return redirect('cart')
-
-        request.session['cart'] = {}
-        if 'last_order_id' in request.session:
-            del request.session['last_order_id']
-        request.session.modified = True
-
-        messages.success(request, "✅ Payment proof uploaded successfully.")
-        return redirect('checkout_success')
 
     return render(request, 'store/upload_payment_proof.html', {
         'payment_method': payment_method,
         'accounts': accounts,
         'cart_count': get_cart_count(request),
-        'logo_url': logo_url,
+        'logo_url': logo_url,  # optional: use in your template to preview the logo
     })
 
 #Contact us
