@@ -83,48 +83,49 @@
       </td>
     </tr>
 
-    <!-- DOWNLOAD LINKS -->
-    {% if items %}
-    <tr>
-      <td style="padding:0 20px;">
-        <h3 style="margin:14px 0 10px; font-size:16px; text-align:center;">
-          روابط التحميل
-        </h3>
-
-       <table role="presentation" cellspacing="0" cellpadding="0" style="margin:16px auto;">
-  <tr>
-   <td
-  align="center"
-  style="
-    background:linear-gradient(90deg,#ff375f,#00c8ff);
-    border-radius:8px;
-  "
->
-      <a
-        href="{{ site_url }}{% url 'download_product' order.id item.id %}"
-        target="_blank"
-        style="
-          display:inline-block;
-          padding:12px 22px;
-          font-family:Arial, sans-serif;
-          font-size:15px;
-          font-weight:700;
-          color:#ffffff;
-          text-decoration:none;
-          border-radius:8px;
-        "
-      >
-        ⬇ Download {{ item.product.name }}
-      </a>
-    </td>
-  </tr>
-            {% endif %}
-          {% endfor %}
+  <!-- DOWNLOAD LINKS -->
+{% if items %}
+<tr>
+  <td style="padding:0 20px;">
+    <h3 style="margin:14px 0 10px; font-size:16px; text-align:center;">
+      روابط التحميل
+    </h3>
+    {% for item in items %}
+      {% if item.product.file %}
+        <table role="presentation" cellspacing="0" cellpadding="0" style="margin:16px auto;">
+          <tr>
+            <td
+              align="center"
+              style="
+                background:linear-gradient(90deg,#ff375f,#00c8ff);
+                border-radius:8px;
+              "
+            >
+              <a
+                href="{{ site_url }}{% url 'download_product' order.id item.id %}"
+                target="_blank"
+                style="
+                  display:inline-block;
+                  padding:12px 22px;
+                  font-family:Arial, sans-serif;
+                  font-size:15px;
+                  font-weight:700;
+                  color:#ffffff;
+                  text-decoration:none;
+                  border-radius:8px;
+                "
+              >
+                ⬇ تحميل {{ item.product.name }}
+              </a>
+            </td>
+          </tr>
         </table>
-      </td>
-    </tr>
-    {% endif %}
+      {% endif %}
+    {% endfor %}
 
+  </td>
+</tr>
+{% endif %}
     <!-- VIEW ORDER BUTTON -->
     <tr>
       <td style="padding:20px; text-align:center;">
