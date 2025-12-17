@@ -7,153 +7,139 @@
   <title>تأكيد الطلب — PixStore</title>
 </head>
 
-<body style="margin:0; padding:20px; background:#0d2438; color:#ffffff;
-             font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial; direction:rtl;">
+<body style="margin:0;padding:0;background:#0d2438;color:#ffffff;font-family:Arial,Roboto,sans-serif;direction:rtl;">
+<center>
 
-<center style="width:100%;">
-  <table role="presentation" cellpadding="0" cellspacing="0" width="100%"
-         style="max-width:700px; margin:0 auto;">
-
-    <!-- LOGO -->
-    <tr>
-      <td style="padding:14px 20px; text-align:center;">
-        <img src="https://pixstore-production.up.railway.app/static/images/pixstore-logo-v2.png"
-             alt="PixStore"
-             width="120"
-             style="display:block; margin:0 auto; height:auto;" />
-      </td>
-    </tr>
-
-    <!-- CHECKMARK -->
-    <tr>
-      <td align="center" style="padding:10px 0;">
-        <img src="https://pixstore-production.up.railway.app/static/images/checkmark-solid.png"
-             width="80" height="80"
-             alt="Success"
-             style="display:block; border:0;" />
-      </td>
-    </tr>
-
-    <!-- TITLE -->
-    <tr>
-      <td style="text-align:center; padding:0 20px;">
-        <h1 style="font-size:20px; margin:0 0 8px;">
-          شكراً لطلبك، {{ name }}!
-        </h1>
-        <p style="margin:0 0 20px; color:#d4d4d4;">
-          تم تأكيد طلبك بنجاح. يمكنك تحميل منتجاتك أدناه.
-        </p>
-      </td>
-    </tr>
-
-    <!-- ORDER SUMMARY -->
-    <tr>
-      <td style="padding:0 20px 18px;">
-        <table role="presentation" width="100%"
-               style="background:#071422; padding:12px; border-radius:8px;">
-          <tr>
-            <td style="color:#dbeafe; font-size:14px;">
-              <div><strong>رقم الطلب:</strong> #{{ order.id }}</div>
-              <div style="margin-top:6px;">
-                <strong>المجموع:</strong>
-                {{ order.total_price }} دج
-                ({{ order.total_price|usd|floatformat:2 }} USD)
-              </div>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-
-    <!-- PRODUCTS -->
-    <tr>
-      <td style="padding:0 20px;">
-        <h3 style="margin:8px 0; font-size:16px;">المنتجات</h3>
-        <ul style="margin:0 0 18px; padding:0; list-style:none;">
-          {% for item in order.items.all %}
-            <li style="padding:8px 0; border-bottom:1px dashed rgba(255,255,255,0.05);">
-              <div style="display:flex; justify-content:space-between; gap:12px;">
-                <span>{{ item.product.name }}</span>
-                <span>×{{ item.quantity }}</span>
-                <span>{{ item.price }} دج</span>
-              </div>
-            </li>
-          {% endfor %}
-        </ul>
-      </td>
-    </tr>
-
-  <!-- DOWNLOAD LINKS -->
-{% if items %}
+<!-- ROOT TABLE -->
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#0d2438;">
 <tr>
-  <td align="center" style="padding:20px;">
+<td align="center">
 
-    <p style="font-size:16px; font-weight:700; margin:0 0 10px;">
-      روابط التحميل
-    </p>
-    {% for item in items %}
-      {% if item.product.file %}
-        <table role="presentation" cellspacing="0" cellpadding="0" style="margin:12px auto;">
+<!-- CONTAINER -->
+<table role="presentation" width="700" cellspacing="0" cellpadding="0" style="max-width:700px;margin:0 auto;">
+
+  <!-- LOGO -->
+  <tr>
+    <td align="center" style="padding:20px;">
+      <img src="https://pixstore-production.up.railway.app/static/images/pixstore-logo-v2.png"
+           alt="PixStore"
+           width="120"
+           style="display:block;border:0;" />
+    </td>
+  </tr>
+
+  <!-- CHECKMARK -->
+  <tr>
+    <td align="center" style="padding:10px;">
+      <img src="https://pixstore-production.up.railway.app/static/images/checkmark-solid.png"
+           width="80"
+           height="80"
+           alt="Success"
+           style="display:block;border:0;" />
+    </td>
+  </tr>
+
+  <!-- TITLE -->
+  <tr>
+    <td align="center" style="padding:0 20px;">
+      <h1 style="font-size:20px;margin:0 0 8px;">
+        شكراً لطلبك، {{ name }}!
+      </h1>
+      <p style="margin:0 0 20px;color:#d4d4d4;">
+        تم تأكيد طلبك بنجاح. يمكنك تحميل منتجاتك أدناه.
+      </p>
+    </td>
+  </tr>
+
+  <!-- ORDER SUMMARY -->
+  <tr>
+    <td style="padding:0 20px 20px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+             style="background:#071422;border-radius:8px;">
+        <tr>
+          <td style="padding:12px;color:#dbeafe;font-size:14px;">
+            <strong>رقم الطلب:</strong> #{{ order.id }}<br>
+            <strong>المجموع:</strong>
+            {{ order.total_price }} دج
+            ({{ order.total_price|usd|floatformat:2 }} USD)
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  <!-- PRODUCTS -->
+  <tr>
+    <td style="padding:0 20px;">
+      <h3 style="margin:10px 0;font-size:16px;">المنتجات</h3>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+        {% for item in order.items.all %}
+        <tr>
+          <td style="padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.08);">
+            {{ item.product.name }} ×{{ item.quantity }} — {{ item.price }} دج
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </td>
+  </tr>
+
+  <!-- DOWNLOADS -->
+  {% if items %}
+  <tr>
+    <td align="center" style="padding:20px;">
+      <h3 style="margin:0 0 12px;font-size:16px;">روابط التحميل</h3>
+
+      {% for item in items %}
+        {% if item.product.file %}
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:10px auto;">
           <tr>
             <td align="center" bgcolor="#00c8ff" style="border-radius:8px;">
-              <a
-                href="{{ site_url }}{% url 'download_product' order.id item.id %}"
-                target="_blank"
-                style="
-                  display:inline-block;
-                  padding:12px 24px;
-                  font-family:Arial, sans-serif;
-                  font-size:15px;
-                  font-weight:700;
-                  color:#ffffff;
-                  text-decoration:none;
-                  border-radius:8px;
-                "
-              >
+              <a href="{{ site_url }}{% url 'download_product' order.id item.id %}"
+                 target="_blank"
+                 style="display:inline-block;padding:12px 24px;font-size:15px;
+                        font-weight:bold;color:#ffffff;text-decoration:none;
+                        border-radius:8px;">
                 تحميل {{ item.product.name }}
               </a>
             </td>
           </tr>
         </table>
-      {% endif %}
-    {% endfor %}
-  </td>
+        {% endif %}
+      {% endfor %}
+    </td>
+  </tr>
+  {% endif %}
+
+  <!-- VIEW ORDER -->
+  <tr>
+    <td align="center" style="padding:20px;">
+      <a href="{{ site_url }}{% url 'my_orders' %}"
+         style="display:inline-block;padding:12px 26px;
+                background:#ff375f;border-radius:12px;
+                color:#ffffff;font-weight:800;text-decoration:none;">
+        عرض حالة الطلب
+      </a>
+    </td>
+  </tr>
+
+  <!-- FOOTER -->
+  <tr>
+    <td align="center" style="padding:20px;font-size:13px;color:#9fb0c0;">
+      للاستفسار:
+      <a href="mailto:itbobo8@googlemail.com" style="color:#00c8ff;text-decoration:none;">
+        itbobo8@googlemail.com
+      </a>
+      <br><br>
+      PixStore — شكراً لاستخدامك متجرنا
+    </td>
+  </tr>
+
+</table>
+</td>
 </tr>
-{% endif %}
-    <!-- VIEW ORDER BUTTON -->
-    <tr>
-      <td style="padding:20px; text-align:center;">
-        <a href="{{ site_url }}{% url 'my_orders' %}"
-           style="
-             display:inline-block;
-             padding:12px 24px;
-             border-radius:12px;
-             background:linear-gradient(90deg,#ff375f,#00c8ff);
-             color:#ffffff;
-             font-weight:800;
-             text-decoration:none;
-           ">
-          عرض حالة الطلب
-        </a>
-      </td>
-    </tr>
+</table>
 
-    <!-- FOOTER -->
-    <tr>
-      <td style="padding:12px 20px; text-align:center;
-                 color:#9fb0c0; font-size:13px;">
-        إذا كان لديك أي استفسار، راسلنا على
-        <a href="mailto:itbobo8@googlemail.com"
-           style="color:#00c8ff; text-decoration:none;">
-          itbobo8@googlemail.com
-        </a>
-        <br><br>
-        PixStore — شكراً لاستخدامك متجرنا
-      </td>
-    </tr>
-
-  </table>
 </center>
-
 </body>
 </html>
