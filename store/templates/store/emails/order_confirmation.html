@@ -86,27 +86,22 @@
   <!-- DOWNLOAD LINKS -->
 {% if items %}
 <tr>
-  <td style="padding:0 20px;">
-    <h3 style="margin:14px 0 10px; font-size:16px; text-align:center;">
+  <td align="center" style="padding:20px;">
+
+    <p style="font-size:16px; font-weight:700; margin:0 0 10px;">
       روابط التحميل
-    </h3>
+    </p>
     {% for item in items %}
       {% if item.product.file %}
-        <table role="presentation" cellspacing="0" cellpadding="0" style="margin:16px auto;">
+        <table role="presentation" cellspacing="0" cellpadding="0" style="margin:12px auto;">
           <tr>
-            <td
-              align="center"
-              style="
-                background:linear-gradient(90deg,#ff375f,#00c8ff);
-                border-radius:8px;
-              "
-            >
+            <td align="center" bgcolor="#00c8ff" style="border-radius:8px;">
               <a
                 href="{{ site_url }}{% url 'download_product' order.id item.id %}"
                 target="_blank"
                 style="
                   display:inline-block;
-                  padding:12px 22px;
+                  padding:12px 24px;
                   font-family:Arial, sans-serif;
                   font-size:15px;
                   font-weight:700;
@@ -115,14 +110,13 @@
                   border-radius:8px;
                 "
               >
-                ⬇ تحميل {{ item.product.name }}
+                تحميل {{ item.product.name }}
               </a>
             </td>
           </tr>
         </table>
       {% endif %}
     {% endfor %}
-
   </td>
 </tr>
 {% endif %}
