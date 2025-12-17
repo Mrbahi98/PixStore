@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-15 10:55+0100\n"
+"POT-Creation-Date: 2025-12-17 20:48+0100\n"
 "PO-Revision-Date: 2025-10-24 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "About & FAQ"
 msgstr "الاسئلة الشائعة"
 
-#: .\store\templates\store\about.html:17 .\store\templates\store\home.html:357
+#: .\store\templates\store\about.html:17 .\store\templates\store\home.html:358
 msgid "About PixStore"
 msgstr "حول بيكس ستور"
 
@@ -35,7 +35,9 @@ msgid ""
 "            PixStore is a digital marketplace providing premium templates,\n"
 "            tools, and creative assets for developers and designers.\n"
 "            "
-msgstr "بيكس ستور هو موقع يقدم عديد المنتجات الرقمية خاصة الحزم الشاملة التي تساعد ويحتاجها اي شخص لبدأ مشروعه الخاص"
+msgstr ""
+"بيكس ستور هو موقع يقدم عديد المنتجات الرقمية خاصة الحزم الشاملة التي تساعد "
+"ويحتاجها اي شخص لبدأ مشروعه الخاص"
 
 #: .\store\templates\store\about.html:28
 msgid ""
@@ -43,7 +45,10 @@ msgid ""
 "            Our mission is to help creators work faster, smarter, and\n"
 "            with confidence using carefully curated digital products.\n"
 "            "
-msgstr "مهمتنا الرئيسية و الدائمة هي مساعدة صناع المحتوى الجدد و المبتدئين لبدأ رحلتهم في عالم المنتجات الرقمية بشكل اسرع و اسهل من خلال تقديم كل الادوات التي يحتاجونها "
+msgstr ""
+"مهمتنا الرئيسية و الدائمة هي مساعدة صناع المحتوى الجدد و المبتدئين لبدأ "
+"رحلتهم في عالم المنتجات الرقمية بشكل اسرع و اسهل من خلال تقديم كل الادوات "
+"التي يحتاجونها "
 
 #: .\store\templates\store\about.html:39
 msgid "What does PixStore sell?"
@@ -55,7 +60,9 @@ msgid ""
 "            PixStore sells digital products such as templates, UI kits,\n"
 "            tools, and design assets ready for instant use.\n"
 "            "
-msgstr "يبيع بيكس ستور منتجات رقمية عبارة حزم شاملة لعديد المنتجات و الادوات الرقمية التي يحتاجها اي صانع محتوى جديد او مبتدئ "
+msgstr ""
+"يبيع بيكس ستور منتجات رقمية عبارة حزم شاملة لعديد المنتجات و الادوات الرقمية "
+"التي يحتاجها اي صانع محتوى جديد او مبتدئ "
 
 #: .\store\templates\store\about.html:55
 msgid "How do I receive my purchase?"
@@ -67,7 +74,10 @@ msgid ""
 "            After completing payment, you will receive instructions\n"
 "            to access your purchased digital product.\n"
 "            "
-msgstr "بعد اكمال عملية الدفع و ارسال الاثبات سوف تصلك رسالة في البريد الالكتروني توضح تفاصيل وحالة الطلب الخاص بك و يمكنك تتبع حالته مباشرة و في أي وقت و بعد التأكد من الدفع عن طريق فريقنا سوف تستلم منتجك مباشرة في بريك الالكتروني نفسه"
+msgstr ""
+"بعد اكمال عملية الدفع و ارسال الاثبات سوف تصلك رسالة في البريد الالكتروني "
+"توضح تفاصيل وحالة الطلب الخاص بك و يمكنك تتبع حالته مباشرة و في أي وقت و بعد "
+"التأكد من الدفع عن طريق فريقنا سوف تستلم منتجك مباشرة في بريك الالكتروني نفسه"
 
 #: .\store\templates\store\about.html:71
 msgid "Can I get a refund?"
@@ -79,31 +89,31 @@ msgid ""
 "            Due to the nature of digital products, refunds are handled\n"
 "            on a case-by-case basis. Please contact support if needed.\n"
 "            "
-msgstr "على حسب طبيعة المنتج الرقمي فيتم دراسة عمليات الاسترداد بشكل دقيق بين اعضاء الفريق و على الزبون ان يوضح سبب الاسترداد بدقة عن طريق ارسال رسالة للدعم التقني للموقع"
+msgstr ""
+"على حسب طبيعة المنتج الرقمي فيتم دراسة عمليات الاسترداد بشكل دقيق بين اعضاء "
+"الفريق و على الزبون ان يوضح سبب الاسترداد بدقة عن طريق ارسال رسالة للدعم "
+"التقني للموقع"
 
 #: .\store\templates\store\base.html:53 .\store\templates\store\cart.html:67
 #: .\store\templates\store\checkout_success.html:125
-#: .\store\templates\store\home.html:269 .\store\templates\store\home.html:334
+#: .\store\templates\store\home.html:269 .\store\templates\store\home.html:335
 #: .\store\templates\store\products.html:245
 msgid "Home"
 msgstr "الرئيسية"
 
 #: .\store\templates\store\base.html:54 .\store\templates\store\cart.html:68
 #: .\store\templates\store\checkout_success.html:126
-#: .\store\templates\store\home.html:270 .\store\templates\store\home.html:339
+#: .\store\templates\store\home.html:270 .\store\templates\store\home.html:340
 #: .\store\templates\store\products.html:246
 msgid "Products"
 msgstr "المنتجات"
 
-#: .\store\templates\store\base.html:140
-msgid "Product added to cart ✅"
-msgstr "✅ تمت الاضافة الى السلة"
-
-#: .\store\templates\store\base.html:144
+#: .\store\templates\store\base.html:55 .\store\templates\store\home.html:271
+#: .\store\templates\store\products.html:247
 #, fuzzy
-#| msgid "Product added successfully!"
-msgid "Product added to cart successfully!"
-msgstr "تم اضافة المنتج بنجاح"
+#| msgid "View My Orders"
+msgid "My Orders"
+msgstr "طلباتي"
 
 #: .\store\templates\store\cart.html:9 .\store\templates\store\cart.html:75
 #, fuzzy
@@ -112,7 +122,6 @@ msgid "Your Cart"
 msgstr "السلة"
 
 #: .\store\templates\store\cart.html:69
-#: .\store\templates\store\checkout_success.html:127
 msgid "Cart"
 msgstr "السلة"
 
@@ -159,26 +168,26 @@ msgstr "تم الطلب بنجاح"
 msgid "PixStore"
 msgstr ""
 
-#: .\store\templates\store\checkout_success.html:139
+#: .\store\templates\store\checkout_success.html:138
 msgid "Payment Successful!"
 msgstr "تم الدفع بنجاح"
 
-#: .\store\templates\store\checkout_success.html:140
+#: .\store\templates\store\checkout_success.html:139
 msgid ""
 "Your digital products are ready. You’ll receive access details by email "
 "shortly."
 msgstr "منتجك الالكتروني جاهز, سوف تستلمه في بريدك الالكتروني"
 
-#: .\store\templates\store\checkout_success.html:143
+#: .\store\templates\store\checkout_success.html:142
 msgid "Continue Shopping"
 msgstr "متابعة التسوق"
 
-#: .\store\templates\store\checkout_success.html:144
+#: .\store\templates\store\checkout_success.html:143
 msgid "View My Orders"
-msgstr "اظهار طلباتي"
+msgstr "طلباتي"
 
-#: .\store\templates\store\checkout_success.html:150
-#: .\store\templates\store\products.html:309
+#: .\store\templates\store\checkout_success.html:149
+#: .\store\templates\store\products.html:310
 msgid "All Rights Reserved."
 msgstr "كل الحقوق محفوظة"
 
@@ -255,47 +264,47 @@ msgstr "طرق اخرى للتواصل معنا"
 msgid "PixStore | Digital Products"
 msgstr ""
 
-#: .\store\templates\store\home.html:284
+#: .\store\templates\store\home.html:285
 msgid "PixStore — Digital goods that ship instantly"
 msgstr ""
 
-#: .\store\templates\store\home.html:285
+#: .\store\templates\store\home.html:286
 msgid ""
 "Premium templates, bundles, and creative tools. Simple checkout, instant "
 "delivery, and full security."
 msgstr "منتجات مميزة، وحزم، وقوالب إبداعية. دفع سهل، وتسليم فوري، وأمان كامل"
 
-#: .\store\templates\store\home.html:286
+#: .\store\templates\store\home.html:287
 msgid "Explore Products"
 msgstr "استكشف المنتجات"
 
-#: .\store\templates\store\home.html:290
+#: .\store\templates\store\home.html:291
 msgid "Featured Products"
 msgstr "المنتجات المميزة "
 
-#: .\store\templates\store\home.html:316
-#: .\store\templates\store\products.html:294
+#: .\store\templates\store\home.html:317
+#: .\store\templates\store\products.html:295
 msgid "View Details"
 msgstr "التفاصيل"
 
-#: .\store\templates\store\home.html:320
-#: .\store\templates\store\products.html:304
+#: .\store\templates\store\home.html:321
+#: .\store\templates\store\products.html:305
 msgid "No products available yet."
 msgstr "لا منتجات متاحة حاليا"
 
-#: .\store\templates\store\home.html:330
+#: .\store\templates\store\home.html:331
 msgid "Quick Links"
 msgstr "روابط سريعة"
 
-#: .\store\templates\store\home.html:344
+#: .\store\templates\store\home.html:345
 msgid "About"
 msgstr "حول"
 
-#: .\store\templates\store\home.html:349 .\store\templates\store\home.html:368
+#: .\store\templates\store\home.html:350 .\store\templates\store\home.html:369
 msgid "Contact Us"
 msgstr "تواصل معنا"
 
-#: .\store\templates\store\home.html:359
+#: .\store\templates\store\home.html:360
 msgid ""
 "\n"
 "    PixStore offers premium digital products — templates, tools, and design "
@@ -312,18 +321,18 @@ msgid "Back to Store"
 msgstr "العودة الى المتجر"
 
 #: .\store\templates\store\product_details.html:150
-#: .\store\templates\store\products.html:299
+#: .\store\templates\store\products.html:300
 msgid "Buy Now"
 msgstr "اشتري الأن"
 
 #: .\store\templates\store\products.html:8
-#: .\store\templates\store\products.html:252
+#: .\store\templates\store\products.html:253
 #, fuzzy
 #| msgid "Products"
 msgid "All Products"
 msgstr "المنتجات"
 
-#: .\store\templates\store\products.html:257
+#: .\store\templates\store\products.html:258
 msgid "All Categories"
 msgstr "جميع الفروع"
 
@@ -1593,6 +1602,14 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid "Product added to cart ✅"
+#~ msgstr "✅ تمت الاضافة الى السلة"
+
+#, fuzzy
+#~| msgid "Product added successfully!"
+#~ msgid "Product added to cart successfully!"
+#~ msgstr "تم اضافة المنتج بنجاح"
 
 #~ msgid "About PixStore | About PixStore"
 #~ msgstr "حول بيكس ستور"

@@ -52,6 +52,8 @@
 </form>
         <a href="{% url 'home' %}" class="hover:text-yellow-300 transition">{% trans "Home" %}</a>
 <a href="{% url 'products' %}" class="hover:text-yellow-300 transition">{% trans "Products" %}</a>
+<a href="{% url 'my_orders' %}" class="hover:text-yellow-300 transition">{% trans "My Orders" %}</a>
+
           <span id="cart-count" class="absolute -top-2 -right-4 bg-yellow-300 text-black text-xs font-semibold px-1.5 py-0.5 rounded-full shadow-sm">
             {% if request.user.is_authenticated %}
               {{ cart_count }}
@@ -137,12 +139,7 @@
 <div id="toast" 
   class="hidden fixed bottom-6 right-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 
   text-white px-5 py-3 rounded-xl shadow-xl transition-all duration-300 z-50 text-sm font-medium tracking-wide backdrop-blur-sm">
-  {% trans "Product added to cart ✅" %}
 </div>
-
-<!-- Toast Message (hidden translation source) -->
-<div id="toast-message" data-msg="{% trans 'Product added to cart successfully!' %}" hidden></div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const params = new URLSearchParams(window.location.search);
