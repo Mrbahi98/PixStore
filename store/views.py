@@ -160,22 +160,26 @@ def my_orders(request):
 # -------------------------------
 # CHECKOUT SUMMARY
 # -------------------------------
+logger = logging.getLogger(__name__)
+
 def _send_order_confirmation(order_id):
     try:
         o = Order.objects.get(pk=order_id)
+
         if not o.email:
             return
 
-        from django.template.loader import render_to_string
-        from anymail.message import AnymailMessage
+        # ✅ Get order items (for downloads)
+        items = OrderItem.objects.filter(order=o).select_related('product')
 
         ctx = {
             "order": o,
+            "items": items,
             "name": o.name or "Customer",
-            "site_url": "https://pixstore-production.up.railway.app"  # your real domain
+            "site_url": "https://pixstore-production.up.railway.app",
         }
 
-        # Render templates
+        # Render email templates
         plain = render_to_string(
             "store/emails/order_confirmation.txt",
             ctx
@@ -194,11 +198,14 @@ def _send_order_confirmation(order_id):
         msg.attach_alternative(html, "text/html")
         msg.send()
 
+        logger.info("Order confirmation sent for order %s", o.id)
+
     except Exception:
-          logging.exception("Order confirmation send failed for order %s", order_id)
-
-logger = logging.getLogger(__name__)
-
+        logger.exception(
+            "Order confirmation send failed for order %s",
+            order_id
+        )
+        
 def checkout_summary(request):
     cart = request.session.get('cart', {})
     if not cart:
@@ -434,6 +441,23 @@ def upload_payment_proof(request):
         'cart_count': get_cart_count(request),
         'logo_url': logo_url,  # optional: use in your template to preview the logo
     })
+
+from django.http import Http404, FileResponse
+
+def download_product(request, order_id, item_id):
+    order = Order.objects.filter(id=order_id, paid=True).first()
+    if not order:
+        raise Http404()
+
+    item = OrderItem.objects.filter(id=item_id, order=order).select_related('product').first()
+    if not item or not item.product.file:
+        raise Http404()
+
+    return FileResponse(
+        item.product.file.open('rb'),
+        as_attachment=True,
+        filename=item.product.file.name.split('/')[-1]
+    )
 
 #Contact us
 def contact(request):

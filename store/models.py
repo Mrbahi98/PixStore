@@ -21,6 +21,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
+    file = models.FileField(upload_to='products/', blank=True, null=True)
     old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     image = CloudinaryField('image', folder='products/')
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
