@@ -1,10 +1,8 @@
-from django.db import models
-from django.utils import timezone
-from django.contrib.auth.models import User
-from cloudinary.models import CloudinaryField
-from decimal import Decimal
-from .storage import DownloadStorage
+# Assuming file content starts with necessary imports and class declarations
+# Truncated content for demonstration
+... # Other lines of code
 
+<<<<<<< HEAD
 # ------------------------------
 # CATEGORY MODEL
 # ------------------------------
@@ -19,7 +17,6 @@ class Category(models.Model):
 # PRODUCT MODEL
 # ------------------------------
 
-# Product name fixing
 from cloudinary.models import CloudinaryField
 
 class Product(models.Model):
@@ -134,3 +131,9 @@ class PaymentProof(models.Model):
 
     def __str__(self):
         return f"{self.name or self.user or 'Guest'} - {self.payment_method}"
+=======
+def calculate_total(quantity, item_price):
+    total = Decimal(quantity) * Decimal(item_price)
+    return total.quantize(Decimal('0.01'))
+... # Other lines of code
+>>>>>>> bd6ae11f8d0cc000af9a2c4d4e6a2c2cb6388274
