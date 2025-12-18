@@ -42,9 +42,9 @@ class Product(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def str(self):
+    def __str__(self):
         return self.name
-    
+
     def discount_percent(self):
         if self.old_price and self.old_price > self.price:
             return int(((self.old_price - self.price) / self.old_price) * 100)
@@ -106,7 +106,7 @@ class Order(models.Model):
         total = Decimal('0.00')
         for item in self.items.all():
             total += (item.price or Decimal('0.00')) * item.quantity
-        return total.quantize(Decimal('0.01'))
+        return total.quantize(Decimal('0.01')
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
