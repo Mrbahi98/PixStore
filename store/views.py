@@ -441,36 +441,28 @@ def upload_payment_proof(request):
         'logo_url': logo_url,  # optional: use in your template to preview the logo
     })
 
-from django.http import FileResponse, Http404
-from django.contrib.auth.decorators import login_required
+from django.http import Http404, HttpResponseRedirect
 
 def download_product(request, order_id, item_id):
-    order = Order.objects.filter(
-        id=order_id,
-        paid=True
-    ).first()
-
+    order = Order.objects.filter(id=order_id, paid=True).first()
     if not order:
         raise Http404("Order not found or not paid")
 
-    item = OrderItem.objects.select_related("product").filter(
-        id=item_id,
-        order=order
-    ).first()
-
-    if not item:
-        raise Http404("Item not found")
-
-    product_file = item.product.file
-
-    if not product_file:
-        raise Http404("No file attached to this product")
-
-    return FileResponse(
-        product_file.open("rb"),
-        as_attachment=True,
-        filename=product_file.name.split("/")[-1]
+    item = (
+        OrderItem.objects
+        .select_related('product')
+        .filter(id=item_id, order=order)
+        .first()
     )
+
+    if not item or not item.product.file:
+        raise Http404("File not available")
+
+    # 🔑 IMPORTANT:
+    # Cloudinary / remote storage → redirect to file URL
+    file_url = item.product.file.url
+
+    return HttpResponseRedirect(file_url)
 
 #Contact us
 def contact(request):
