@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from dotenv import load_dotenv
+load_dotenv()
 from pathlib import Path
 import os
 import cloudinary
@@ -19,7 +21,7 @@ import cloudinary.api
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-7alwxm&uo@2c+olf&0p28kksf)$4+!_c8dngpfhs1^ewr*ba+3'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['pixstore-production.up.railway.app', 'localhost', '127.0.0.1']
 CSRF_TRUSTED_ORIGINS = ['https://pixstore-production.up.railway.app']
 SESSION_COOKIE_SECURE = True   
@@ -106,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'ar'
 LANGUAGES = [
     ('en', 'English'),
     ('ar', 'العربية'),

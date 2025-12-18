@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
 from decimal import Decimal
+from .storage import DownloadStorage
 
 # ------------------------------
 # CATEGORY MODEL
@@ -17,23 +18,40 @@ class Category(models.Model):
 # ------------------------------
 # PRODUCT MODEL
 # ------------------------------
+from .storage import DownloadStorage
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    file = models.FileField(upload_to='products/', blank=True, null=True)
-    old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
-    image = CloudinaryField('image', folder='products/')
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, blank=True, null=True)
 
-    def __str__(self):
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+
+    # ✅ Downloadable file (ZIP / PDF / etc)
+    file = models.FileField(
+        upload_to='products/files/',
+        storage=DownloadStorage(),
+        blank=True,
+        null=True
+    )
+
+    # ✅ Image stays as image (DO NOT TOUCH)
+    image = CloudinaryField('image', folder='products/images/')
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
+    def str(self):
         return self.name
 
     def discount_percent(self):
         if self.old_price and self.old_price > self.price:
             return int(((self.old_price - self.price) / self.old_price) * 100)
         return 0
-
 
 # ------------------------------
 # ORDER MODEL
