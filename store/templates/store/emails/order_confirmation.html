@@ -16,7 +16,7 @@
 <td align="center">
 
 <!-- CONTAINER -->
-<table role="presentation" width="700" cellspacing="0" cellpadding="0" style="max-width:700px;margin:0 auto;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:600px; width:100%; margin:0 auto;">
 
   <!-- LOGO -->
   <tr>
@@ -29,15 +29,25 @@
   </tr>
 
   <!-- CHECKMARK -->
-  <tr>
-    <td align="center" style="padding:10px;">
-      <img src="https://pixstore-production.up.railway.app/static/images/checkmark-solid.png"
-           width="80"
-           height="80"
-           alt="Success"
-           style="display:block;border:0;" />
-    </td>
-  </tr>
+<tr>
+  <td align="center" style="padding:16px;">
+    <div style="
+      width:72px;
+      height:72px;
+      margin:0 auto;
+      border-radius:50%;
+      background:linear-gradient(90deg,#ff375f,#00c8ff);
+      color:#ffffff;
+      font-size:36px;
+      font-weight:900;
+      line-height:72px;
+      text-align:center;
+      font-family:Arial, sans-serif;
+    ">
+      ✓
+    </div>
+  </td>
+</tr>
 
   <!-- TITLE -->
   <tr>
@@ -71,7 +81,7 @@
   <!-- PRODUCTS -->
   <tr>
     <td style="padding:0 20px;">
-      <h3 style="margin:10px 0;font-size:16px;">المنتجات</h3>
+      <p style="margin:10px 0;font-size:16px;">المنتجات</p>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
         {% for item in order.items.all %}
         <tr>
@@ -87,28 +97,41 @@
   <!-- DOWNLOADS -->
   {% if items %}
   <tr>
-    <td align="center" style="padding:20px;">
-      <h3 style="margin:0 0 12px;font-size:16px;">روابط التحميل</h3>
+  <td align="center" style="padding:16px;">
+    <p style="font-size:16px;font-weight:700;margin:0 0 10px;">
+      روابط التحميل
+    </p>
 
-      {% for item in items %}
-        {% if item.product.file %}
-        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:10px auto;">
+    {% for item in items %}
+      {% if item.product.file %}
+        <table role="presentation"
+               width="100%"
+               cellspacing="0"
+               cellpadding="0"
+               style="max-width:600px;margin:10px auto;">
           <tr>
             <td align="center" bgcolor="#00c8ff" style="border-radius:8px;">
-              <a href="{{ site_url }}{% url 'download_product' order.id item.id %}"
-                 target="_blank"
-                 style="display:inline-block;padding:12px 24px;font-size:15px;
-                        font-weight:bold;color:#ffffff;text-decoration:none;
-                        border-radius:8px;">
+              <a
+                href="{{ site_url }}{% url 'download_product' order.id item.id %}"
+                target="_blank"
+                style="
+                  display:inline-block;
+                  padding:12px 22px;
+                  font-size:15px;
+                  font-weight:700;
+                  color:#ffffff;
+                  text-decoration:none;
+                "
+              >
                 تحميل {{ item.product.name }}
               </a>
             </td>
           </tr>
         </table>
-        {% endif %}
-      {% endfor %}
-    </td>
-  </tr>
+      {% endif %}
+    {% endfor %}
+  </td>
+</tr>
   {% endif %}
 
   <!-- VIEW ORDER -->
