@@ -1,8 +1,10 @@
-# Assuming file content starts with necessary imports and class declarations
-# Truncated content for demonstration
-... # Other lines of code
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
+from decimal import Decimal
+from .storage import DownloadStorage
 
-<<<<<<< HEAD
 # ------------------------------
 # CATEGORY MODEL
 # ------------------------------
@@ -11,7 +13,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
-
 
 # ------------------------------
 # PRODUCT MODEL
