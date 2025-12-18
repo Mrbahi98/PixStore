@@ -14,6 +14,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "email", "total_price", "status", "paid", "created_at")
     list_filter = ("status", "paid", "created_at")
     search_fields = ("id", "name", "email")
+    readonly_fields = ("paid",)
     inlines = [OrderItemInline]
 
 @admin.register(PaymentProof)
