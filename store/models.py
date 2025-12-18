@@ -19,6 +19,7 @@ class Category(models.Model):
 # PRODUCT MODEL
 # ------------------------------
 
+# Product name fixing
 from cloudinary.models import CloudinaryField
 
 class Product(models.Model):
