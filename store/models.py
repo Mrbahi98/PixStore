@@ -23,28 +23,28 @@ from cloudinary.models import CloudinaryField
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    price = models.DecimalField(max_digits=8, decimal_places=2)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal("0.00"))
     old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
 
-    # Digital file (Cloudinary RAW)
+    # Digital file (downloads)
     file = models.FileField(upload_to="products/", blank=True, null=True)
 
-    # Image (Cloudinary IMAGE)
+    # Product image
     image = CloudinaryField("image", folder="products/")
 
     category = models.ForeignKey(
-        Category,
+        "Category",
         on_delete=models.SET_NULL,
-        blank=True,
-        null=True
+        null=True,
+        blank=True
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     def str(self):
         return self.name
-
+    
     def discount_percent(self):
         if self.old_price and self.old_price > self.price:
             return int(((self.old_price - self.price) / self.old_price) * 100)
