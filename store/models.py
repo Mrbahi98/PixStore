@@ -24,47 +24,23 @@ from cloudinary.models import CloudinaryField
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    
-    price = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        default=Decimal("0.00")
-    )
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+    old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
 
-    old_price = models.DecimalField(
-        max_digits=8,
-        decimal_places=2,
-        null=True,
-        blank=True
-    )
+    # Digital file (Cloudinary RAW)
+    file = models.FileField(upload_to="products/", blank=True, null=True)
 
-    # ✅ Product image (Cloudinary image)
-    image = CloudinaryField(
-        "image",
-        folder="products/images",
-        blank=True,
-        null=True
-    )
-
-    # ✅ Downloadable file (Cloudinary RAW file)
-    file = CloudinaryField(
-        resource_type="raw",
-        folder="products/files",
-        blank=True,
-        null=True
-    )
+    # Image (Cloudinary IMAGE)
+    image = CloudinaryField("image", folder="products/")
 
     category = models.ForeignKey(
-        "Category",
+        Category,
         on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ["-created_at"]
 
     def str(self):
         return self.name

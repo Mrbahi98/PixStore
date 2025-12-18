@@ -441,26 +441,36 @@ def upload_payment_proof(request):
         'logo_url': logo_url,  # optional: use in your template to preview the logo
     })
 
-import cloudinary
-import cloudinary.utils
-from django.http import Http404
-from .models import Order, OrderItem
+from django.http import FileResponse, Http404
+from django.contrib.auth.decorators import login_required
 
 def download_product(request, order_id, item_id):
-    # 🔒 Only paid orders can download
-    order = get_object_or_404(Order, id=order_id, paid=True)
+    order = Order.objects.filter(
+        id=order_id,
+        paid=True
+    ).first()
 
-    item = get_object_or_404(
-        OrderItem.objects.select_related('product'),
+    if not order:
+        raise Http404("Order not found or not paid")
+
+    item = OrderItem.objects.select_related("product").filter(
         id=item_id,
         order=order
+    ).first()
+
+    if not item:
+        raise Http404("Item not found")
+
+    product_file = item.product.file
+
+    if not product_file:
+        raise Http404("No file attached to this product")
+
+    return FileResponse(
+        product_file.open("rb"),
+        as_attachment=True,
+        filename=product_file.name.split("/")[-1]
     )
-
-    if not item.product.file:
-        raise Http404("File not found")
-
-    # ✅ Cloudinary-compatible download
-    return redirect(item.product.file.url)
 
 #Contact us
 def contact(request):
