@@ -89,7 +89,6 @@ def update_cart_item(request):
             
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
 
-
 def cart_view(request):
     return redirect('checkout_summary')
     cart = request.session.get('cart', {})
@@ -449,15 +448,17 @@ def download_product(request, order_id, item_id):
     if not order:
         raise Http404()
 
-    item = OrderItem.objects.filter(id=item_id, order=order).select_related('product').first()
+    item = (
+        OrderItem.objects
+        .filter(id=item_id, order=order)
+        .select_related('product')
+        .first()
+    )
     if not item or not item.product.file:
         raise Http404()
 
-    return FileResponse(
-        item.product.file.open('rb'),
-        as_attachment=True,
-        filename=item.product.file.name.split('/')[-1]
-    )
+    # ✅ Cloudinary-safe download
+    return redirect(item.product.file.url)
 
 #Contact us
 def contact(request):
