@@ -18,32 +18,53 @@ class Category(models.Model):
 # ------------------------------
 # PRODUCT MODEL
 # ------------------------------
-from .storage import DownloadStorage
+
+from cloudinary.models import CloudinaryField
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True)
+    
+    price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        default=Decimal("0.00")
+    )
 
-    price = models.DecimalField(max_digits=6, decimal_places=2)
-    old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    old_price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
 
-    # ✅ Downloadable file (ZIP / PDF / etc)
-    file = models.FileField(
-        upload_to='products/files/',
-        storage=DownloadStorage(),
+    # ✅ Product image (Cloudinary image)
+    image = CloudinaryField(
+        "image",
+        folder="products/images",
         blank=True,
         null=True
     )
 
-    # ✅ Image stays as image (DO NOT TOUCH)
-    image = CloudinaryField('image', folder='products/images/')
+    # ✅ Downloadable file (Cloudinary RAW file)
+    file = CloudinaryField(
+        resource_type="raw",
+        folder="products/files",
+        blank=True,
+        null=True
+    )
 
     category = models.ForeignKey(
-        Category,
+        "Category",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
 
     def str(self):
         return self.name
