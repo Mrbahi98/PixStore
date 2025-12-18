@@ -18,6 +18,8 @@ class Category(models.Model):
 # ------------------------------
 # PRODUCT MODEL
 # ------------------------------
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
@@ -28,16 +30,8 @@ class Product(models.Model):
     )
 
     image = CloudinaryField('image', folder='products/')
-    file = models.FileField(upload_to='products/', null=True, blank=True)
-
-    category = models.ForeignKey(
-        Category,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="products",
-    )
-
+    file = models.FileField(upload_to='products/',storage=RawMediaCloudinaryStorage(),null=True,blank=True)
+    category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True,related_name="products",)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
