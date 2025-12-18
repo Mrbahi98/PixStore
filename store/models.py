@@ -24,25 +24,23 @@ from cloudinary.models import CloudinaryField
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.DecimalField(max_digits=8, decimal_places=2, default=Decimal("0.00"))
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
 
-    # Digital file (downloads)
-    file = models.FileField(upload_to="products/", blank=True, null=True)
-
-    # Product image
-    image = CloudinaryField("image", folder="products/")
+    image = CloudinaryField('image', folder='products/')
+    file = models.FileField(upload_to='products/', null=True, blank=True)
 
     category = models.ForeignKey(
-        "Category",
+        Category,
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
+        related_name="products"
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def str(self):
+    def __str__(self):
         return self.name
     
     def discount_percent(self):
