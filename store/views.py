@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .models import Product, Order, OrderItem, PaymentProof
 from django.conf import settings
 from .store_utils import get_cart_count
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, Http404
 import json
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -441,15 +441,12 @@ def upload_payment_proof(request):
         'logo_url': logo_url,  # optional: use in your template to preview the logo
     })
 
-from django.http import Http404
-from django.shortcuts import redirect
-from cloudinary.utils import private_download_url
 
 def download_product(request, order_id, item_id):
-    # ✅ Ensure paid order
+    # ✅ Only allow PAID orders
     order = Order.objects.filter(id=order_id, paid=True).first()
     if not order:
-        raise Http404()
+        raise Http404("Order not found or not paid")
 
     item = OrderItem.objects.filter(
         id=item_id,
@@ -457,19 +454,14 @@ def download_product(request, order_id, item_id):
     ).select_related('product').first()
 
     if not item or not item.product.file:
-        raise Http404()
+        raise Http404("File not found")
 
-    # 🔐 Generate secure Cloudinary download URL
-    cloudinary_file = item.product.file
-
-    download_url = private_download_url(
-        cloudinary_file.public_id,
-        resource_type="raw",
-        attachment=True,
-        expires_at=None  # optional expiry
+    return FileResponse(
+        item.product.file.open('rb'),
+        as_attachment=True,
+        filename=item.product.file.name.split('/')[-1]
     )
 
-    return redirect(download_url)
 
 #Contact us
 def contact(request):

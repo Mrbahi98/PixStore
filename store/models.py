@@ -9,29 +9,36 @@ User = get_user_model()
 # ------------------------------
 # CATEGORY MODEL
 # ------------------------------
+# store/models.py
+
+User = get_user_model()
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
 
-# ------------------------------
-# PRODUCT MODEL
-# ------------------------------
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
-
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    old_price = models.DecimalField(
-        max_digits=8, decimal_places=2, null=True, blank=True
+    old_price = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+
+    # ✅ Images on Cloudinary (SAFE)
+    image = CloudinaryField('image', folder='products/')
+
+    # ✅ Downloads handled by Django FileField (THIS IS IMPORTANT)
+    file = models.FileField(upload_to='products/', blank=True, null=True)
+
+    category = models.ForeignKey(
+        Category,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="products"
     )
 
-    image = CloudinaryField('image', folder='products/')
-    file = models.FileField(upload_to='products/',storage=RawMediaCloudinaryStorage(),null=True,blank=True)
-    category = models.ForeignKey(Category,on_delete=models.SET_NULL,null=True,blank=True,related_name="products",)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
