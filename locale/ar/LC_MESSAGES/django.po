@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-17 20:48+0100\n"
+"POT-Creation-Date: 2025-12-31 10:53+0100\n"
 "PO-Revision-Date: 2025-10-24 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
@@ -265,14 +265,17 @@ msgid "PixStore | Digital Products"
 msgstr ""
 
 #: .\store\templates\store\home.html:285
-msgid "PixStore — Digital goods that ship instantly"
-msgstr ""
+msgid ""
+"Launch Your First Digital Product — Without Confusion, Tech Stress, or "
+"Wasted Time"
+msgstr "أطلق منتجك الرقمي الأول — وداعاً للحيرة، التعقيدات التقنية، والوقت الضائع"
 
 #: .\store\templates\store\home.html:286
 msgid ""
-"Premium templates, bundles, and creative tools. Simple checkout, instant "
-"delivery, and full security."
-msgstr "منتجات مميزة، وحزم، وقوالب إبداعية. دفع سهل، وتسليم فوري، وأمان كامل"
+"PixStore helps beginners and content creators build their first digital "
+"product using clear systems, ready-to-use tools, and a step-by-step launch "
+"path — not random files."
+msgstr "يساعد PixStore المبتدئين وصنّاع المحتوى على بناء أول منتج رقمي لهم عبر أنظمة واضحة، وأدوات جاهزة للاستخدام، ومسار إطلاق تدريجي — نحن لا نمنحك مجرد ملفات عشوائية."
 
 #: .\store\templates\store\home.html:287
 msgid "Explore Products"
@@ -1602,6 +1605,12 @@ msgstr ""
 #: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:236
 msgid "Connect, get help, or contribute"
 msgstr ""
+
+#~ msgid ""
+#~ "Premium templates, bundles, and creative tools. Simple checkout, instant "
+#~ "delivery, and full security."
+#~ msgstr ""
+#~ "منتجات مميزة، وحزم، وقوالب إبداعية. دفع سهل، وتسليم فوري، وأمان كامل"
 
 #~ msgid "Product added to cart ✅"
 #~ msgstr "✅ تمت الاضافة الى السلة"
